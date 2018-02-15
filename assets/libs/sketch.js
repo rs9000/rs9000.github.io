@@ -44,7 +44,7 @@ function setup() {
   video = createCapture(VIDEO);
   background(0);
   video.size(227, 227);
- // video.hide();
+  video.hide();
 
   // Train buttons
   buttonA = select('#buttonA');
