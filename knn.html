@@ -1,0 +1,111 @@
+<head>
+  <meta charset="UTF-8">
+  <title>DeepLearning</title>
+
+  <script src="assets/libs/p5.min.js"></script>
+  <script src="assets/libs/p5.dom.min.js"></script>
+  <script src="assets/libs/ml5.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
+  <!-- BootStrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <style>
+  button {
+    margin: 4px;
+    padding: 8px;
+  }
+  body{
+    margin-top: 2%;
+  }
+  .bs-callout {
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+	}
+	.bs-callout h4 {
+	    margin-top: 0;
+	    margin-bottom: 5px;
+	}
+	.bs-callout p:last-child {
+	    margin-bottom: 0;
+	}
+	.bs-callout code {
+	    border-radius: 3px;
+	}
+	.bs-callout+.bs-callout {
+	    margin-top: -5px;
+	}
+	.bs-callout-default h4 {
+	    color: #777;
+	}
+	.bs-callout-primary {
+	    border-left-color: #428bca;
+	}
+	.bs-callout-primary h4 {
+	    color: #428bca;
+	}
+
+  </style>
+</head>
+
+<body>
+	<div class="container">
+
+	<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" href="https://rs9000.github.io/">Return to home</a>
+  </li>
+
+</ul>
+
+	<div class="bs-callout bs-callout-primary">
+			  <h4>DeepLearn machine</h4>
+				Interactive training of a KNN Image Classifier.<br>
+				<a href="https://deeplearnjs.org/">https://deeplearnjs.org</a>
+	</div>
+
+  <div class="row">
+    <div class="col">
+	      <div id="canvasContainer" style="margin-top: 15%;"></div>
+	      <center><span id="loading">Loading the model...</span></center>
+    </div>
+    <div class="col">
+	    <button type="button" id="buttonA" class="btn btn-success">Train Green</button>
+	    <button type="button" id="resetA" class="btn btn-info">Reset</button><br>
+	    <input type="text" id="textA" class="form-control" placeholder="Text to speak if green">
+	    <p><span id="exampleA">0</span> Examples in A</p>
+	    Confidence in A is: <span id="confidenceA">0</span>
+	    <div class="progress">
+		  <div class="progress-bar progress-bar-striped bg-success" aria-valuemin="0" aria-valuemax="100" id="barA" role="progressbar" style="width:0%"></div>
+		</div>
+	    <br><br>
+	    <button type="button" id="buttonB" class="btn btn-primary">Train Blue</button>
+	    <button type="button" id="resetB" class="btn btn-info">Reset</button><br>
+	   	<input type="text" id="textB" class="form-control" placeholder="Text to speak if blue">
+	    <p><span id="exampleB">0</span> Examples in B</p>
+	    Confidence in B is: <span id="confidenceB">0</span>
+	    <div class="progress">
+		  <div class="progress-bar progress-bar-striped" aria-valuemin="0" aria-valuemax="100" id="barB" role="progressbar" style="width:0%"></div>
+		</div>
+    </div>
+    <div class="col">
+     	<div style="margin-top: 50%">
+ 	 	<p>
+   	 	<button type="button" class="btn btn-danger" id="buttonPredict">Start test!</button><br>
+    	My guess is category: <span id="result">...</span>.
+  		</p>
+  		</div>
+    </div>
+  </div>
+  <br><hr>
+</div>
+
+<script src="assets/libs/sketch.js"></script>
+</body>
+
+</html>
