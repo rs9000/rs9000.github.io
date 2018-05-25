@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Form module</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bulma Version 0.7.1-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css" rel="stylesheet" type="text/css">
+    <!--- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!--- MyScript -->
+    <script src="rs.js"></script>
+
+</head>
+
+<body>
+
+  <div style='margin-left: 30%; margin-right: 30%;'>
+
+    <br><br>
+    <h2 class="subtitle">ISIS "A. BERNOCCHI" - LEGNANO</h2>
+    <h1 class="title">SCHEDA RIASSUNTIVA DELLE ATTIVITA’ SVOLTE</h1>
+
+    <div class="field">
+      <label class="label">Persona</label>
+      <div class="control">
+        <div class="select">
+          <select id="persona_s">
+            <option>ATA</option>
+            <option>Docente</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Cognome</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="Text input">
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Nome</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="Text input">
+      </div>
+    </div>
+
+     <div class="field">
+      <label class="label">Codice Fiscale</label>
+      <div class="control">
+        <input class="input" type="text" placeholder="Text input">
+      </div>
+    </div>
+
+     <div class="field">
+      <label class="label">Tipologia contratto</label>
+      <div class="control">
+        <div class="select">
+          <select>
+            <option>Tempo determinato</option>
+            <option>Tempo indeterminato</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <br>
+
+    <div id=att_list>
+    <div class="box" id='att'>
+        <div class="field">
+          <label class="label">Attivita' svolta</label>
+          <div class="control">
+            <div class="select">
+              <select id="attivita_menu">
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Descrizione</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="Text input">
+          </div>
+        </div>
+
+
+        <div class="field">
+          <label class="label">Data</label>
+          <div class="control">
+            <input class="input" type="date" placeholder="Text input">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Dalle ore</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="Text input">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Alle ore</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="Text input">
+          </div>
+        </div>
+
+         <div class="field">
+          <label class="label">Totale ore</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="Text input">
+          </div>
+        </div>
+
+    </div>
+    </div><br><br>
+
+    <center>
+    <a style="margin-right: 10%" class="button is-primary" id="add_att">Aggiungi altra attività</a>
+    <a style="margin-bottom: 20%" class="button is-danger">INVIA FORM</a>
+    </center>
+
+  </div>
+
+</body>
+</html>
