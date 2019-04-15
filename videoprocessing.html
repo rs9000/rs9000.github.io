@@ -1,0 +1,2847 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.5.3" />
+<title>videoprocessing API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.name small{font-weight:normal}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title"><code>videoprocessing</code> module</h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">from cv2 import aruco
+import cv2
+import pickle
+import net
+import numpy as np
+from random import randint
+import utils
+from munkres import Munkres
+import copy
+
+
+class Rect:
+    &#34;&#34;&#34;Rect class, contains a Bounding Box position
+
+    Params:
+        x (int): Top x coordinate
+        y (int): Top y coordinate
+        w (int): Width
+        h (int): Height
+        z (int): Depth
+    &#34;&#34;&#34;
+
+    def __init__(self, x, y, w, h, z=None):
+        self.x, self.y = int(x), int(y)
+        self.w, self.h = int(w), int(h)
+        self.c_x, self.c_y = x + int(w / 2), y + int(h / 2)
+        self.z = z
+
+    def interpolate(self, r2):
+        # type: (Rect) -&gt; Rect
+        &#34;&#34;&#34;Interpolate two Rect classes
+
+        r2: Rect to interpolate
+        return:  Interpolated Rect
+        &#34;&#34;&#34;
+
+        x = (self.x + r2.x) / 2
+        y = (self.y + r2.y) / 2
+        w = (self.w + r2.w) / 2
+        h = (self.h + r2.h) / 2
+        z = None
+        if self.z is not None and r2.z is not None:
+            z = (self.z + r2.z) / 2
+
+        return Rect(int(x), int(y), int(w), int(h), z)
+
+    @staticmethod
+    def from_corners(corners, calibration_camera):
+        # type: (list, list) -&gt; Rect
+        &#34;&#34;&#34;Initialize Rect with corners
+
+        corners: List of Aruco corners coordinates
+        calibration_camera: Info about the camera calibration
+        return: Rect
+        &#34;&#34;&#34;
+
+        ret, mtx, dist, rvecs, tvecs = calibration_camera
+        x1, y1, x2, y2 = corners[0][0][0], corners[0][0][1], corners[0][2][0], corners[0][2][1]
+        w, h = abs(x1 - x2), abs(y1 - y2)
+
+        rvecs, tvecs, _ = aruco.estimatePoseSingleMarkers(corners, 0.09, mtx, dist)
+
+        box = Rect(int(x1), int(y1), int(w), int(h), tvecs.squeeze()[2])
+        return box
+
+
+class BoundBox:
+    &#34;&#34;&#34;BoundBox class, contains a Bounding Box (BBox) information
+
+    Params:
+        id (int): Id to identify the BBox
+        rect (Rect): Rect containing coordinates
+        color (int, int, int): Color of the BBox
+        age (int): Number of frame since BBox is not detected
+    &#34;&#34;&#34;
+
+    def __init__(self, id, rect, color, age):
+        self.id = id
+        self.rect = rect
+        self.color = color
+        self.age = age
+
+    def draw(self, frame):
+        # type: (np.ndarray) -&gt; np.ndarray
+        &#34;&#34;&#34;
+
+        frame: Video frame (w, h, n_channel)
+        return: Video frame with BBox drawn on it
+        &#34;&#34;&#34;
+
+        id = 0 if self.id is None else self.id
+        frame = cv2.rectangle(frame, (self.rect.x, self.rect.y), (self.rect.x + self.rect.w, self.rect.y + self.rect.h),
+                              self.color, 2)
+        cv2.putText(frame, &#34;id {}&#34;.format(id), (self.rect.x, self.rect.y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.color, 2,
+                    lineType=cv2.LINE_AA)
+
+        return frame
+
+
+class PointId:
+    &#34;&#34;&#34;PointId class, contains a point information
+
+    Params:
+        id (int): Id to identify the BBox
+        x (int): X coordinate
+        y (int): Y coordinate
+        color (int, int, int): Point color
+    &#34;&#34;&#34;
+
+    def __init__(self, id, x, y, color):
+        self.id = id
+        self.x = x
+        self.y = y
+        self.color = color
+
+    def draw(self, frame):
+        # type: (np.ndarray) -&gt; np.ndarray
+        &#34;&#34;&#34;
+
+        frame: Video frame (w, h, n_channel)
+        return: Video frame with PointID drawn on it
+        &#34;&#34;&#34;
+
+        id = 0 if self.id is None else self.id
+        frame = cv2.circle(frame, (self.x, self.y), 10, self.color, -1)
+        cv2.putText(frame, &#34;id: {}&#34;.format(id), (self.x, int(self.y - 20)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.color,
+                    2,
+                    lineType=cv2.LINE_AA)
+
+        return frame
+
+
+class PlayVideo:
+    &#34;&#34;&#34;PlayVideo, Class to play video frame-by-frame
+
+    Params:
+        video (str): Video filename
+        w (int): Width
+        h (int): Height
+        start_frame (int): Start from this frame number
+        background (bool): Process in background
+        save_video (str): Filename to save video
+    &#34;&#34;&#34;
+
+    def __init__(self, video, w, h, start_frame, background=True, save_video=None):
+        self.h, self.w = h, w
+        self.frame_number = 0
+        self.background = background
+        self.save_video = save_video
+        self.video = video
+        self.start_frame = start_frame
+
+    def play(self, func: classmethod):
+        # type: (classmethod) -&gt; None
+        &#34;&#34;&#34;Play video frame by frame and apply a function `func`
+
+        func: Generic function to execute at each frame
+        return: None
+        &#34;&#34;&#34;
+
+        print(&#34;Loading video...&#34;)
+        cap = cv2.VideoCapture(self.video)
+        cap.set(1, self.start_frame)
+        vid_writer1 = None
+
+        if self.save_video is not None:
+            vid_writer1 = cv2.VideoWriter(self.save_video, cv2.VideoWriter_fourcc(&#39;M&#39;, &#39;J&#39;, &#39;P&#39;, &#39;G&#39;), 30,
+                                          (self.w, self.h))
+
+        if not cap.isOpened():
+            print(&#34;{} Error VideoCap not opened, quitting ... &#34;.format(self.video))
+            quit()
+        else:
+            ret, frame = cap.read()
+
+            print(&#34;Video processing...&#34;)
+            while ret:
+                frame = cv2.resize(frame, (self.w, self.h))
+                frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                frame_gray = cv2.cvtColor(frame_gray, cv2.COLOR_GRAY2BGR)
+
+                frame_gray = func(frame, frame_gray, self.frame_number)
+
+                ret, frame = cap.read()
+                self.frame_number += 1
+
+                if not self.background:
+                    cv2.imshow(&#34;Camera&#34;, frame_gray)
+                    cv2.waitKey(1)
+
+                if vid_writer1 is not None:
+                    vid_writer1.write(frame_gray)
+
+            if vid_writer1 is not None:
+                vid_writer1.release()
+
+            print(&#34;...End video.&#34;)
+            return None
+
+
+class HumanDetection:
+    &#34;&#34;&#34;HumanDetection, Detect human in a frame video
+
+    Params:
+        args (): Arguments
+    &#34;&#34;&#34;
+
+    def __init__(self, args):
+        self.video = args.video
+        self.start_frame = args.video_start_frame
+        self.aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_7X7_1000)
+        self.boxes_3d = []
+        self.colors = {}
+        self.detection_dnn = net.Yolo(args.yolo_cfg, args.yolo_w, 0.97)
+        with open(args.calibration_cam, &#39;rb&#39;) as f:
+            self.calibration_camera = pickle.load(f)
+
+    def run(self, w, h, background=True):
+        # type: (int, int, bool) -&gt; None
+        &#34;&#34;&#34;Execute human detection
+
+        w: Frame width
+        h: Frame height
+        background: Process in background mode
+        return: None
+        &#34;&#34;&#34;
+
+        video = PlayVideo(self.video, w, h, self.start_frame, background)
+        video.play(self._detect)
+
+    def _detect(self, frame, frame_gray, frame_number):
+        # type: (np.ndarray, np.ndarray, int) -&gt; np.ndarray
+        &#34;&#34;&#34;Use Yolo and Aruco detectors to extract BBox data
+
+        frame: Frame of video
+        frame_gray: Frame of video in grayscale
+        frame_number: Current frame number
+        return: None
+        &#34;&#34;&#34;
+
+        self.boxes_3d.append([])
+        box_assignment = BoxAssignment(90, 30)
+
+        if self.detection_dnn:
+            boxes = self.detection_dnn.predict(frame)
+
+            for i in range(len(boxes)):
+                x, y, w, h = boxes[i]
+                box = Rect(x, y, w, h)
+                boxes[i] = BoundBox(None, box, None, None)
+                frame_gray = boxes[i].draw(frame_gray)
+
+            corners, aruco_ids, _ = aruco.detectMarkers(frame_gray, self.aruco_dict)
+
+            for i in range(len(corners)):
+                box = Rect.from_corners(corners[i], self.calibration_camera)
+                id_aruco = aruco_ids[i][0]
+                if id_aruco not in self.colors.keys():
+                    self.colors[id_aruco] = (randint(64, 255), randint(64, 255), randint(64, 255))
+                corners[i] = BoundBox(id_aruco, box, self.colors[id_aruco], None)
+
+            # Aruco assignment
+            if aruco_ids is not None:
+                boxes = box_assignment.assign_aruco(boxes, corners)
+
+            for box in boxes:
+                self.boxes_3d[frame_number].append(box)
+
+        return frame_gray
+
+    def save_data(self, filepath):
+        # type: (str) -&gt; None
+        &#34;&#34;&#34;Save data extracted from video into file
+
+        filepath: Filename to save data
+        return: None
+        &#34;&#34;&#34;
+
+        with open(filepath, &#39;wb&#39;) as f:
+            pickle.dump([self.boxes_3d], f)
+        return
+
+
+class PostProcessing:
+    &#34;&#34;&#34;PostProcessing, Process data extracted from video
+
+      Params:
+          args (): Arguments
+      &#34;&#34;&#34;
+
+    def __init__(self, args):
+        self.video = args.video
+        self.start_frame = args.video_start_frame
+        self.boxes_3d = None
+        self.homography_data = None
+        self.bird_view = None
+
+    def load_data(self, filepath):
+        # type: (str) -&gt; None
+        &#34;&#34;&#34;Load data form file
+
+        filepath: filename
+        return: None
+        &#34;&#34;&#34;
+
+        with open(filepath, &#39;rb&#39;) as f:
+            self.boxes_3d = pickle.load(f)[0]
+
+    def save_data(self, filepath):
+        # type: (str) -&gt; None
+        &#34;&#34;&#34;Save data into file
+        Data use this structure:
+        frame1: [Box1, Box2, ...]
+        frame2: [Box1, Box2, ...]
+        ...
+        frameN: [Box1, Box2, ...]
+
+        filepath: Filename to save data
+        return: None
+        &#34;&#34;&#34;
+
+        with open(filepath, &#39;wb&#39;) as f:
+            pickle.dump([self.boxes_3d], f)
+        return
+
+    def iterate_data(self):
+        # type: () -&gt; (int, BoundBox)
+        &#34;&#34;&#34;Generator to iterate data (BBox in each frame)
+
+        :yield iterator: (Frame number, Bounding Box)
+        &#34;&#34;&#34;
+
+        for i in range(0, len(self.boxes_3d)):
+            for box in self.boxes_3d[i]:
+                yield i, box
+
+    def get_homography(self, w, h, background=False, save_video=None):
+        # type: (int, int, bool, str) -&gt; None
+        &#34;&#34;&#34; Run homography video
+
+        w: Frame width
+        h: Frame height
+        background: Process in background mode
+        save_video: Filename to save video
+        return: None
+        &#34;&#34;&#34;
+
+        video = PlayVideo(self.video, w, h, self.start_frame, background, save_video)
+        video.play(self._homography)
+
+    def compute_homography(self, pts_src, pts_dst, pic):
+        # type: (np.ndarray, np.ndarray, str) -&gt; None
+        &#34;&#34;&#34;Compute homography
+
+        pts_src: Source points to compute homography
+        pts_dst: Destination points to compute homography
+        pic: Filename of a birdview picture
+        return: None
+        &#34;&#34;&#34;
+
+        pic = cv2.imread(pic, 0)
+        self.bird_view = cv2.cvtColor(pic, cv2.COLOR_GRAY2BGR)
+
+        hom, status = cv2.findHomography(pts_src, pts_dst)
+        self.homography_data = copy.deepcopy(self.boxes_3d)
+        iterator = ((i, j, box) for i in range(len(self.homography_data))
+                    for j, box in enumerate(self.homography_data[i]))
+
+        for i, j, box in iterator:
+            x, y = box.rect.c_x, (box.rect.y + box.rect.h)
+            points = np.array([[[x, y]]], dtype=&#39;float32&#39;)
+            points = cv2.perspectiveTransform(points, hom)
+            self.homography_data[i][j] = PointId(box.id, points[0][0][0], points[0][0][1], box.color)
+
+    def _homography(self, frame, frame_gray, current_frame):
+        # type: (np.ndarray, np.ndarray, int) -&gt; np.ndarray
+        &#34;&#34;&#34;
+
+        frame: Video frame
+        frame_gray: Video frame in grayscale
+        current_frame: Number of the current frame
+        return: Frame with Points drawn on it
+        &#34;&#34;&#34;
+
+        bird_view = copy.deepcopy(self.bird_view)
+        for point in self.homography_data[current_frame]:
+            point.draw(bird_view)
+        return bird_view
+
+    def _smoot_get(self):
+        # type: () -&gt; dict
+        &#34;&#34;&#34;
+
+        return: Dict with BBox points on which to apply smooth
+        &#34;&#34;&#34;
+
+        h_points = {}
+        iterator = self.iterate_data()
+
+        for _, box in iterator:
+            if box.id not in h_points.keys():
+                h_points[box.id] = []
+            h_points[box.id].append((box.rect.x, box.rect.y, box.rect.h, box.rect.w))
+        return h_points
+
+    def smooth(self, kernel_size):
+        # type: (int) -&gt; None
+        &#34;&#34;&#34;Smooth BBox
+
+        kernel_size: Number specifying kernel size (high more smoothing)
+        return:
+
+        &gt;&gt; NOTE: Smoothing is applied only to (y, h, w) BBox params
+                 Smoothing on X coordinate is NOT visually good
+        &#34;&#34;&#34;
+
+        h_points = self._smoot_get()
+        for key, val in h_points.items():
+            h_points[key] = utils.smooth(np.array(val), kernel_size, kernel_dim=4)
+
+        h_indexes = {}
+        iterator = self.iterate_data()
+
+        for _, box in iterator:
+            if box.id not in h_indexes:
+                h_indexes[box.id] = 0
+            ix = h_indexes[box.id]
+            box.rect.y = int(h_points[box.id][ix][1])
+            box.rect.h = int(h_points[box.id][ix][2])
+            box.rect.w = int(h_points[box.id][ix][3])
+            h_indexes[box.id] += 1
+
+    def _predict_z(self):
+        # type: () -&gt; (float, float)
+        &#34;&#34;&#34;Regression BBox points (height, depth)
+
+        return: straight line coefficients (m, q)
+        &#34;&#34;&#34;
+
+        box_h, box_z = [], []
+        iterator = self.iterate_data()
+
+        for _, box in iterator:
+            if box.rect.z is not None:
+                box_h.append(box.rect.h)
+                box_z.append(box.rect.z)
+
+        coeff = np.polyfit(np.array(box_h), np.array(box_z), 1)
+        return coeff[0], coeff[1]
+
+    def fill_z(self):
+        # type: () -&gt; None
+        &#34;&#34;&#34;Estimate missing depth information of BBox in data
+           and fill them inplace
+
+        return: None
+        &#34;&#34;&#34;
+
+        m, q = self._predict_z()
+        iterator = self.iterate_data()
+
+        for _, box in iterator:
+            if box.rect.z is None:
+                box.rect.z = box.rect.h * m + q
+
+    def assign_id(self, mode=&#39;3d&#39;, threshold=120, max_age=30, aruco_priority=True):
+        # type: (str, int, int) -&gt; None
+        &#34;&#34;&#34;Assign BBox ids
+
+        mode: Distance mode: (3d, bottom, center)
+        threshold: Tolerance threshold
+        max_age: Max number of frames than remove BBox
+        aruco_priority: Assign aruco ID if available
+        return: None
+        &#34;&#34;&#34;
+
+        first_frame = 0
+        box_assignment = BoxAssignment(threshold, max_age)
+
+        while len(self.boxes_3d[first_frame]) &lt; 1:
+            first_frame += 1
+
+        box_assignment.init(self.boxes_3d[first_frame])
+        for i in range(first_frame, len(self.boxes_3d)):
+            self.boxes_3d = box_assignment.assign(self.boxes_3d, i, mode, aruco_priority)
+
+    def get_video(self, w, h, background=False, save_video=None):
+        # type: (int, int, bool, str) -&gt; None
+        &#34;&#34;&#34;Execute human detection
+
+        w: Frame width
+        h: Frame height
+        background: Process in background mode
+        save_video: Filename to save video
+        return: None
+        &#34;&#34;&#34;
+
+        video = PlayVideo(self.video, w, h, self.start_frame, background, save_video)
+        video.play(self._draw_boxes)
+
+    def _draw_boxes(self, frame, frame_gray, frame_number):
+        # type: (np.ndarray, np.ndarray, int) -&gt; np.ndarray
+        &#34;&#34;&#34;
+
+        frame: Frame of video
+        frame_gray: Frame of video in grayscale
+        frame_number: Current frame number
+        return: Frame with BBox drawn on it
+        &#34;&#34;&#34;
+
+        for box in self.boxes_3d[frame_number]:
+            frame_gray = box.draw(frame_gray)
+        return frame_gray
+
+    def _prec(self, id, frame_num, window):
+        # type: (int, int, int) -&gt; BoundBox or None
+        &#34;&#34;&#34;Find previous BBox with id = id
+
+        id: BBox ID
+        frame_num: Current frame number
+        window: Frame window to search
+        return: None
+        &#34;&#34;&#34;
+
+        window = frame_num - window
+        while frame_num &gt; window and frame_num &gt; 0:
+            iterator = (box for box in self.boxes_3d[frame_num] if (box.id == id) and (box.age == 0))
+            for box in iterator:
+                return box
+            frame_num -= 1
+        return None
+
+    def _succ(self, id, frame_num, window):
+        # type: (int, int, int) -&gt; BoundBox or None
+        &#34;&#34;&#34;Find next BBox with id = id
+
+        id: BBox ID
+        frame_num: Current frame number
+        window: Frame window to search
+        return: None
+        &#34;&#34;&#34;
+
+        window = frame_num + window
+        while frame_num &lt; window and frame_num &lt; len(self.boxes_3d):
+            iterator = (box for box in self.boxes_3d[frame_num] if (box.id == id) and (box.age == 0))
+            for box in iterator:
+                return box
+            frame_num += 1
+        return None
+
+    def __get_ids_at_frame(self, frame_num):
+        # type: (int) -&gt; list
+        &#34;&#34;&#34;Get all BBox ids at frame = frame_num
+
+        frame_num: Frame number
+        return:  List of BBox ids
+        &#34;&#34;&#34;
+
+        box_in_frame = []
+        for box in self.boxes_3d[frame_num]:
+            box_in_frame.append(box.id)
+        return box_in_frame
+
+    def __get_all_id(self):
+        # type: () -&gt; list
+        &#34;&#34;&#34;Get all uniques BBox ids in data
+
+        return:  List of ids
+        &#34;&#34;&#34;
+
+        box_ids = []
+        iterator = self.iterate_data()
+        iterator = ((_, box) for _, box in iterator if box.id not in box_ids)
+
+        for _, box in iterator:
+            box_ids.append(box.id)
+        return box_ids
+
+    def fill(self, window=90):
+        # type: (int) -&gt; None
+        &#34;&#34;&#34;Fill missing detections interpolating data
+
+        window: Window size
+        return: None
+        &#34;&#34;&#34;
+
+        all_ids = self.__get_all_id()
+        iterator = ((i, _id) for _id in all_ids for i in range(0, len(self.boxes_3d))
+                    if _id not in self.__get_ids_at_frame(i))
+
+        for i, _id in iterator:
+            prec_box, next_box = self._prec(_id, i, window), self._succ(_id, i, window)
+            if prec_box is not None and next_box is not None:
+                prec_box.rect = prec_box.rect.interpolate(next_box.rect)
+                self.boxes_3d[i].append(prec_box)
+        return None
+
+    def plot_3d(self, box_id, savepath=None):
+        # type: (int, str) -&gt; None
+        &#34;&#34;&#34;Plot 3d path of a BBox with id = box_id
+
+        box_id: ID BBox to plot
+        savepath: Filename to save video
+        return: None
+        &#34;&#34;&#34;
+
+        points = []
+        out = None
+        iterator = self.iterate_data()
+
+        if savepath is not None:
+            out = cv2.VideoWriter(savepath, cv2.VideoWriter_fourcc(&#39;M&#39;, &#39;J&#39;, &#39;P&#39;, &#39;G&#39;), 30, (800, 800))
+
+        for i, box in iterator:
+            if box.id == box_id:
+                points.append((box.rect.x, box.rect.y+box.rect.h, box.rect.z))
+            else:
+                points.append((None, None, None))
+
+        ts = np.array(points, dtype=np.float32)
+        for i in range(1, len(ts)):
+            fig = utils.show_temporal_sequence(ts[:i], center=np.nanmean(ts, 0), radius=np.sqrt(np.nanvar(ts)),
+                                               colormap=&#39;jet&#39;, swapaxis=False)
+            fig.savefig(&#34;frame.png&#34;)
+            img = cv2.imread(&#34;frame.png&#34;)
+
+            if out:
+                out.write(img)
+            else:
+                cv2.imshow(&#34;Plot 3d&#34;, img)
+                cv2.waitKey(1)
+        if out:
+            out.release()
+        return
+
+
+class BoxAssignment:
+    &#34;&#34;&#34;BoxAssignment, BBox ID re-assignment
+
+    Params:
+        threshold (int): Threshold tolerance
+        max_age (int): Max number of frame, than remove BBox
+    &#34;&#34;&#34;
+
+    def __init__(self, threshold, max_age):
+        self.threshold = threshold
+        self.max_age = max_age
+        self.aruco_dict = {}
+        self.aruco_ids = []
+        self.boxes = []
+        self.n_boxes = 0
+        self.highest_id = -1
+
+    def init(self, init_boxes):
+        # type: (list) -&gt; None
+        &#34;&#34;&#34;Initialize BBox assignment
+
+        init_boxes: List of BBox
+        return: None
+        &#34;&#34;&#34;
+
+        [self._add_new_box(box) for box in init_boxes if not self.boxes]
+
+    def assign_aruco(self, boxes, corners):
+        # type: (list, list) -&gt; list
+        &#34;&#34;&#34;Assign aruco id to the nearest BBox
+
+        boxes: List of BBox
+        corners: List of Aruco-Box
+        return: List of BBox with the aruco id
+        &#34;&#34;&#34;
+
+        cost_matrix = self._cost_matrix(corners, boxes, mode=&#39;center&#39;)
+        m = Munkres()
+        indexes = m.compute(cost_matrix)
+
+        for idx in indexes:
+            aruco_id, box_id = idx[0], idx[1]
+            boxes[box_id].id = corners[aruco_id].id
+            boxes[box_id].color = corners[aruco_id].color
+            boxes[box_id].rect.z = corners[aruco_id].rect.z
+
+        return boxes
+
+    def assign(self, boxes_3d, frame_num, mode, aruco_priority=True):
+        # type: (list, int, str, bool) -&gt; list
+        &#34;&#34;&#34;Assign ID to BBox
+           Use same id of the previous frame for pre-existent BBox
+           Use new id for new-entry BBox
+
+        boxes_3d: Data extracted from video (List of BBox for each frame)
+        frame_num: Current frame number
+        mode: Assignment mode (3d, bottom, center)
+        aruco_priority: If available use aruco id
+        return: Tagged data
+        &#34;&#34;&#34;
+
+        boxes = boxes_3d[frame_num]
+        current_box = []
+        found_new_box = True
+
+        # Check box in this frame
+        if not boxes:
+            return boxes_3d
+
+        # Aging box
+        self._age_box_update()
+
+        # Delete old box
+        [self.boxes.remove(box) for box in self.boxes if box.age &gt; self.max_age]
+
+        while found_new_box:
+            # Compute cost matrix
+            cost_matrix = self._cost_matrix(boxes, self.boxes, mode=mode)
+
+            # Hungarian algorithm
+            m = Munkres()
+            indexes = m.compute(cost_matrix)
+            found_new_box = False
+
+            #  Assign ID
+            for idx, box, cost in zip(indexes, boxes, cost_matrix):
+                id_box, id_saved_box = idx[0], idx[1]
+
+                if cost[id_saved_box] &lt; self.threshold:
+
+                    # Assign ID if cost &lt; threshold
+                    if aruco_priority and box.id is not None:
+                        if box.id != self.boxes[id_saved_box].id and self.boxes[id_saved_box].id not in self.aruco_ids:
+                            self.aruco_ids.append(box.id)
+                            boxes_3d = self._replace_id(boxes_3d, frame_num, self.boxes[id_saved_box].id, box.id,
+                                                        box.color)
+                            self.boxes[id_saved_box].id = box.id
+                            self.boxes[id_saved_box].color = box.color
+
+                    self.boxes[id_saved_box].rect = box.rect
+                    self.boxes[id_saved_box].age = 0
+
+                else:
+                    # Add new box if cost &gt; threshold
+                    self._add_new_box(box)
+                    found_new_box = True
+
+        # Update box list in the current frame
+        [current_box.append(box) for box in self.boxes if box.age == 0]
+        boxes_3d[frame_num] = copy.deepcopy(current_box)
+        return boxes_3d
+
+    @staticmethod
+    def _replace_id(boxes_3d, frame_num, id, new_id, color):
+        # type: (list, int, int, int, (int, int, int)) -&gt; list
+        &#34;&#34;&#34;Replace id of all BBox with new id for each frame &lt; frame_num
+
+        boxes_3d: Data extracted from video (List of BBox for each frame)
+        frame_num: Frame number
+        id: ID to replace
+        new_id: New ID
+        color: Color to use
+        return: None
+        &#34;&#34;&#34;
+
+        iterator = (box for i in range(0, frame_num) for box in boxes_3d[i] if box.id == id)
+        for box in iterator:
+            box.id = new_id
+            box.color = color
+        return boxes_3d
+
+    def _cost_matrix(self, rows, cols, mode=&#39;bottom&#39;):
+        # type: (list, list, str) -&gt; list
+        &#34;&#34;&#34;Compute cost matrix
+
+        rows: List of BBox
+        cols: List of BBox
+        mode: Distance mode (3d, bottom, center)
+        return: Cost Matrix
+        &#34;&#34;&#34;
+
+        cost_matrix = []
+
+        for r in rows:
+            row = []
+            for c in cols:
+                a, b = None, None
+                if mode == &#39;center&#39;:
+                    a = (r.rect.c_x, r.rect.c_y)
+                    b = (c.rect.c_x, c.rect.c_y)
+                elif mode == &#39;bottom&#39;:
+                    a = (r.rect.c_x, r.rect.y + r.rect.h)
+                    b = (c.rect.c_x, c.rect.y + c.rect.h)
+                elif mode == &#39;3d&#39;:
+                    a = (r.rect.c_x, r.rect.y + r.rect.h, r.rect.z * 10)
+                    b = (c.rect.c_x, c.rect.y + c.rect.h, c.rect.z * 10)
+
+                cost = self._distance_euclidean(a, b)
+                row.append(cost)
+            cost_matrix.append(row)
+
+        return cost_matrix
+
+    def _age_box_update(self):
+        # type: () -&gt; None
+        &#34;&#34;&#34;Update age in Bbox
+
+        return: None
+        &#34;&#34;&#34;
+
+        for box in self.boxes:
+            box.age += 1
+
+    def _get_new_id(self):
+        # type: () -&gt; int
+        &#34;&#34;&#34;Get max-id number assigned
+
+        return: max ID
+        &#34;&#34;&#34;
+
+        self.highest_id += 1
+        while self.highest_id in self.aruco_ids:
+            self.highest_id += 1
+        return self.highest_id
+
+    def _add_new_box(self, box):
+        # type: (BoundBox) -&gt; None
+        &#34;&#34;&#34;Add BBox to a list of active BBox
+
+        box: BBox
+        return: None
+        &#34;&#34;&#34;
+
+        id, age = self._get_new_id(), 0
+        color = (randint(64, 255), randint(64, 255), randint(64, 255))
+        self.boxes.append(BoundBox(id, box.rect, color, age))
+        self.n_boxes += 1
+
+    @staticmethod
+    def _distance_euclidean(a, b):
+        # type: ((int, int)) -&gt; float
+        &#34;&#34;&#34;
+
+        a: Point coordinates (2d or 3d)
+        b: Point coordinates (2d or 3d)
+        return: Distance value
+        &#34;&#34;&#34;
+
+        assert len(a) == len(b)
+
+        val = 0
+        for i in range(len(a)):
+            val += (a[i] - b[i]) ** 2
+        return val ** (1 / 2)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="videoprocessing.BoundBox"><code class="flex name class">
+<span>class <span class="ident">BoundBox</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>BoundBox class, contains a Bounding Box (BBox) information</p>
+<h2 id="params">Params</h2>
+<dl>
+<dt><strong><code>id</code></strong> :&ensp;<code>int</code></dt>
+<dd>Id to identify the BBox</dd>
+<dt><strong><code>rect</code></strong> :&ensp;<a title="videoprocessing.Rect" href="#videoprocessing.Rect"><code>Rect</code></a></dt>
+<dd>Rect containing coordinates</dd>
+<dt><strong><code>color</code></strong> :&ensp;<code>int</code>, <code>int</code>, <code>int</code></dt>
+<dd>Color of the BBox</dd>
+<dt><strong><code>age</code></strong> :&ensp;<code>int</code></dt>
+<dd>Number of frame since BBox is not detected</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class BoundBox:
+    &#34;&#34;&#34;BoundBox class, contains a Bounding Box (BBox) information
+
+    Params:
+        id (int): Id to identify the BBox
+        rect (Rect): Rect containing coordinates
+        color (int, int, int): Color of the BBox
+        age (int): Number of frame since BBox is not detected
+    &#34;&#34;&#34;
+
+    def __init__(self, id, rect, color, age):
+        self.id = id
+        self.rect = rect
+        self.color = color
+        self.age = age
+
+    def draw(self, frame):
+        # type: (np.ndarray) -&gt; np.ndarray
+        &#34;&#34;&#34;
+
+        frame: Video frame (w, h, n_channel)
+        return: Video frame with BBox drawn on it
+        &#34;&#34;&#34;
+
+        id = 0 if self.id is None else self.id
+        frame = cv2.rectangle(frame, (self.rect.x, self.rect.y), (self.rect.x + self.rect.w, self.rect.y + self.rect.h),
+                              self.color, 2)
+        cv2.putText(frame, &#34;id {}&#34;.format(id), (self.rect.x, self.rect.y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.color, 2,
+                    lineType=cv2.LINE_AA)
+
+        return frame</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="videoprocessing.BoundBox.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self, id, rect, color, age)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Initialize self.
+See help(type(self)) for accurate signature.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def __init__(self, id, rect, color, age):
+    self.id = id
+    self.rect = rect
+    self.color = color
+    self.age = age</code></pre>
+</details>
+</dd>
+<dt id="videoprocessing.BoundBox.draw"><code class="name flex">
+<span>def <span class="ident">draw</span></span>(<span>self, frame)</span>
+</code></dt>
+<dd>
+<section class="desc"><dl>
+<dt><strong><code>frame</code></strong> :&ensp;<code>Video</code> <code>frame</code> (<code>w</code>, <code>h</code>, <code>n_channel</code>)</dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>return</code></strong> :&ensp;<code>Video</code> <code>frame</code> <code>with</code> <code>BBox</code> <code>drawn</code> <code>on</code> <code>it</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def draw(self, frame):
+    # type: (np.ndarray) -&gt; np.ndarray
+    &#34;&#34;&#34;
+
+    frame: Video frame (w, h, n_channel)
+    return: Video frame with BBox drawn on it
+    &#34;&#34;&#34;
+
+    id = 0 if self.id is None else self.id
+    frame = cv2.rectangle(frame, (self.rect.x, self.rect.y), (self.rect.x + self.rect.w, self.rect.y + self.rect.h),
+                          self.color, 2)
+    cv2.putText(frame, &#34;id {}&#34;.format(id), (self.rect.x, self.rect.y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.color, 2,
+                lineType=cv2.LINE_AA)
+
+    return frame</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="videoprocessing.BoxAssignment"><code class="flex name class">
+<span>class <span class="ident">BoxAssignment</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>BoxAssignment, BBox ID re-assignment</p>
+<h2 id="params">Params</h2>
+<dl>
+<dt><strong><code>threshold</code></strong> :&ensp;<code>int</code></dt>
+<dd>Threshold tolerance</dd>
+<dt><strong><code>max_age</code></strong> :&ensp;<code>int</code></dt>
+<dd>Max number of frame, than remove BBox</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class BoxAssignment:
+    &#34;&#34;&#34;BoxAssignment, BBox ID re-assignment
+
+    Params:
+        threshold (int): Threshold tolerance
+        max_age (int): Max number of frame, than remove BBox
+    &#34;&#34;&#34;
+
+    def __init__(self, threshold, max_age):
+        self.threshold = threshold
+        self.max_age = max_age
+        self.aruco_dict = {}
+        self.aruco_ids = []
+        self.boxes = []
+        self.n_boxes = 0
+        self.highest_id = -1
+
+    def init(self, init_boxes):
+        # type: (list) -&gt; None
+        &#34;&#34;&#34;Initialize BBox assignment
+
+        init_boxes: List of BBox
+        return: None
+        &#34;&#34;&#34;
+
+        [self._add_new_box(box) for box in init_boxes if not self.boxes]
+
+    def assign_aruco(self, boxes, corners):
+        # type: (list, list) -&gt; list
+        &#34;&#34;&#34;Assign aruco id to the nearest BBox
+
+        boxes: List of BBox
+        corners: List of Aruco-Box
+        return: List of BBox with the aruco id
+        &#34;&#34;&#34;
+
+        cost_matrix = self._cost_matrix(corners, boxes, mode=&#39;center&#39;)
+        m = Munkres()
+        indexes = m.compute(cost_matrix)
+
+        for idx in indexes:
+            aruco_id, box_id = idx[0], idx[1]
+            boxes[box_id].id = corners[aruco_id].id
+            boxes[box_id].color = corners[aruco_id].color
+            boxes[box_id].rect.z = corners[aruco_id].rect.z
+
+        return boxes
+
+    def assign(self, boxes_3d, frame_num, mode, aruco_priority=True):
+        # type: (list, int, str, bool) -&gt; list
+        &#34;&#34;&#34;Assign ID to BBox
+           Use same id of the previous frame for pre-existent BBox
+           Use new id for new-entry BBox
+
+        boxes_3d: Data extracted from video (List of BBox for each frame)
+        frame_num: Current frame number
+        mode: Assignment mode (3d, bottom, center)
+        aruco_priority: If available use aruco id
+        return: Tagged data
+        &#34;&#34;&#34;
+
+        boxes = boxes_3d[frame_num]
+        current_box = []
+        found_new_box = True
+
+        # Check box in this frame
+        if not boxes:
+            return boxes_3d
+
+        # Aging box
+        self._age_box_update()
+
+        # Delete old box
+        [self.boxes.remove(box) for box in self.boxes if box.age &gt; self.max_age]
+
+        while found_new_box:
+            # Compute cost matrix
+            cost_matrix = self._cost_matrix(boxes, self.boxes, mode=mode)
+
+            # Hungarian algorithm
+            m = Munkres()
+            indexes = m.compute(cost_matrix)
+            found_new_box = False
+
+            #  Assign ID
+            for idx, box, cost in zip(indexes, boxes, cost_matrix):
+                id_box, id_saved_box = idx[0], idx[1]
+
+                if cost[id_saved_box] &lt; self.threshold:
+
+                    # Assign ID if cost &lt; threshold
+                    if aruco_priority and box.id is not None:
+                        if box.id != self.boxes[id_saved_box].id and self.boxes[id_saved_box].id not in self.aruco_ids:
+                            self.aruco_ids.append(box.id)
+                            boxes_3d = self._replace_id(boxes_3d, frame_num, self.boxes[id_saved_box].id, box.id,
+                                                        box.color)
+                            self.boxes[id_saved_box].id = box.id
+                            self.boxes[id_saved_box].color = box.color
+
+                    self.boxes[id_saved_box].rect = box.rect
+                    self.boxes[id_saved_box].age = 0
+
+                else:
+                    # Add new box if cost &gt; threshold
+                    self._add_new_box(box)
+                    found_new_box = True
+
+        # Update box list in the current frame
+        [current_box.append(box) for box in self.boxes if box.age == 0]
+        boxes_3d[frame_num] = copy.deepcopy(current_box)
+        return boxes_3d
+
+    @staticmethod
+    def _replace_id(boxes_3d, frame_num, id, new_id, color):
+        # type: (list, int, int, int, (int, int, int)) -&gt; list
+        &#34;&#34;&#34;Replace id of all BBox with new id for each frame &lt; frame_num
+
+        boxes_3d: Data extracted from video (List of BBox for each frame)
+        frame_num: Frame number
+        id: ID to replace
+        new_id: New ID
+        color: Color to use
+        return: None
+        &#34;&#34;&#34;
+
+        iterator = (box for i in range(0, frame_num) for box in boxes_3d[i] if box.id == id)
+        for box in iterator:
+            box.id = new_id
+            box.color = color
+        return boxes_3d
+
+    def _cost_matrix(self, rows, cols, mode=&#39;bottom&#39;):
+        # type: (list, list, str) -&gt; list
+        &#34;&#34;&#34;Compute cost matrix
+
+        rows: List of BBox
+        cols: List of BBox
+        mode: Distance mode (3d, bottom, center)
+        return: Cost Matrix
+        &#34;&#34;&#34;
+
+        cost_matrix = []
+
+        for r in rows:
+            row = []
+            for c in cols:
+                a, b = None, None
+                if mode == &#39;center&#39;:
+                    a = (r.rect.c_x, r.rect.c_y)
+                    b = (c.rect.c_x, c.rect.c_y)
+                elif mode == &#39;bottom&#39;:
+                    a = (r.rect.c_x, r.rect.y + r.rect.h)
+                    b = (c.rect.c_x, c.rect.y + c.rect.h)
+                elif mode == &#39;3d&#39;:
+                    a = (r.rect.c_x, r.rect.y + r.rect.h, r.rect.z * 10)
+                    b = (c.rect.c_x, c.rect.y + c.rect.h, c.rect.z * 10)
+
+                cost = self._distance_euclidean(a, b)
+                row.append(cost)
+            cost_matrix.append(row)
+
+        return cost_matrix
+
+    def _age_box_update(self):
+        # type: () -&gt; None
+        &#34;&#34;&#34;Update age in Bbox
+
+        return: None
+        &#34;&#34;&#34;
+
+        for box in self.boxes:
+            box.age += 1
+
+    def _get_new_id(self):
+        # type: () -&gt; int
+        &#34;&#34;&#34;Get max-id number assigned
+
+        return: max ID
+        &#34;&#34;&#34;
+
+        self.highest_id += 1
+        while self.highest_id in self.aruco_ids:
+            self.highest_id += 1
+        return self.highest_id
+
+    def _add_new_box(self, box):
+        # type: (BoundBox) -&gt; None
+        &#34;&#34;&#34;Add BBox to a list of active BBox
+
+        box: BBox
+        return: None
+        &#34;&#34;&#34;
+
+        id, age = self._get_new_id(), 0
+        color = (randint(64, 255), randint(64, 255), randint(64, 255))
+        self.boxes.append(BoundBox(id, box.rect, color, age))
+        self.n_boxes += 1
+
+    @staticmethod
+    def _distance_euclidean(a, b):
+        # type: ((int, int)) -&gt; float
+        &#34;&#34;&#34;
+
+        a: Point coordinates (2d or 3d)
+        b: Point coordinates (2d or 3d)
+        return: Distance value
+        &#34;&#34;&#34;
+
+        assert len(a) == len(b)
+
+        val = 0
+        for i in range(len(a)):
+            val += (a[i] - b[i]) ** 2
+        return val ** (1 / 2)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="videoprocessing.BoxAssignment.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self, threshold, max_age)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Initialize self.
+See help(type(self)) for accurate signature.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def __init__(self, threshold, max_age):
+    self.threshold = threshold
+    self.max_age = max_age
+    self.aruco_dict = {}
+    self.aruco_ids = []
+    self.boxes = []
+    self.n_boxes = 0
+    self.highest_id = -1</code></pre>
+</details>
+</dd>
+<dt id="videoprocessing.BoxAssignment.assign"><code class="name flex">
+<span>def <span class="ident">assign</span></span>(<span>self, boxes_3d, frame_num, mode, aruco_priority=True)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Assign ID to BBox
+Use same id of the previous frame for pre-existent BBox
+Use new id for new-entry BBox</p>
+<dl>
+<dt><strong><code>boxes_3d</code></strong> :&ensp;<code>Data</code> <code>extracted</code> <code>from</code> <code>video</code> (<code>List</code> of <code>BBox</code> <code>for</code> <code>each</code> <code>frame</code>)</dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>frame_num</code></strong> :&ensp;<code>Current</code> <code>frame</code> <code>number</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>mode</code></strong> :&ensp;<code>Assignment</code> <code>mode</code> (<code>3d</code>, <code>bottom</code>, <code>center</code>)</dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>aruco_priority</code></strong> :&ensp;<code>If</code> <code>available</code> <code>use</code> <code>aruco</code> <code>id</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>return</code></strong> :&ensp;<code>Tagged</code> <code>data</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def assign(self, boxes_3d, frame_num, mode, aruco_priority=True):
+    # type: (list, int, str, bool) -&gt; list
+    &#34;&#34;&#34;Assign ID to BBox
+       Use same id of the previous frame for pre-existent BBox
+       Use new id for new-entry BBox
+
+    boxes_3d: Data extracted from video (List of BBox for each frame)
+    frame_num: Current frame number
+    mode: Assignment mode (3d, bottom, center)
+    aruco_priority: If available use aruco id
+    return: Tagged data
+    &#34;&#34;&#34;
+
+    boxes = boxes_3d[frame_num]
+    current_box = []
+    found_new_box = True
+
+    # Check box in this frame
+    if not boxes:
+        return boxes_3d
+
+    # Aging box
+    self._age_box_update()
+
+    # Delete old box
+    [self.boxes.remove(box) for box in self.boxes if box.age &gt; self.max_age]
+
+    while found_new_box:
+        # Compute cost matrix
+        cost_matrix = self._cost_matrix(boxes, self.boxes, mode=mode)
+
+        # Hungarian algorithm
+        m = Munkres()
+        indexes = m.compute(cost_matrix)
+        found_new_box = False
+
+        #  Assign ID
+        for idx, box, cost in zip(indexes, boxes, cost_matrix):
+            id_box, id_saved_box = idx[0], idx[1]
+
+            if cost[id_saved_box] &lt; self.threshold:
+
+                # Assign ID if cost &lt; threshold
+                if aruco_priority and box.id is not None:
+                    if box.id != self.boxes[id_saved_box].id and self.boxes[id_saved_box].id not in self.aruco_ids:
+                        self.aruco_ids.append(box.id)
+                        boxes_3d = self._replace_id(boxes_3d, frame_num, self.boxes[id_saved_box].id, box.id,
+                                                    box.color)
+                        self.boxes[id_saved_box].id = box.id
+                        self.boxes[id_saved_box].color = box.color
+
+                self.boxes[id_saved_box].rect = box.rect
+                self.boxes[id_saved_box].age = 0
+
+            else:
+                # Add new box if cost &gt; threshold
+                self._add_new_box(box)
+                found_new_box = True
+
+    # Update box list in the current frame
+    [current_box.append(box) for box in self.boxes if box.age == 0]
+    boxes_3d[frame_num] = copy.deepcopy(current_box)
+    return boxes_3d</code></pre>
+</details>
+</dd>
+<dt id="videoprocessing.BoxAssignment.assign_aruco"><code class="name flex">
+<span>def <span class="ident">assign_aruco</span></span>(<span>self, boxes, corners)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Assign aruco id to the nearest BBox</p>
+<dl>
+<dt><strong><code>boxes</code></strong> :&ensp;<code>List</code> of <code>BBox</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>corners</code></strong> :&ensp;<code>List</code> of <code>Aruco</code>-<code>Box</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>return</code></strong> :&ensp;<code>List</code> of <code>BBox</code> <code>with</code> <code>the</code> <code>aruco</code> <code>id</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def assign_aruco(self, boxes, corners):
+    # type: (list, list) -&gt; list
+    &#34;&#34;&#34;Assign aruco id to the nearest BBox
+
+    boxes: List of BBox
+    corners: List of Aruco-Box
+    return: List of BBox with the aruco id
+    &#34;&#34;&#34;
+
+    cost_matrix = self._cost_matrix(corners, boxes, mode=&#39;center&#39;)
+    m = Munkres()
+    indexes = m.compute(cost_matrix)
+
+    for idx in indexes:
+        aruco_id, box_id = idx[0], idx[1]
+        boxes[box_id].id = corners[aruco_id].id
+        boxes[box_id].color = corners[aruco_id].color
+        boxes[box_id].rect.z = corners[aruco_id].rect.z
+
+    return boxes</code></pre>
+</details>
+</dd>
+<dt id="videoprocessing.BoxAssignment.init"><code class="name flex">
+<span>def <span class="ident">init</span></span>(<span>self, init_boxes)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Initialize BBox assignment</p>
+<dl>
+<dt><strong><code>init_boxes</code></strong> :&ensp;<code>List</code> of <code>BBox</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>return</code></strong> :&ensp;<code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def init(self, init_boxes):
+    # type: (list) -&gt; None
+    &#34;&#34;&#34;Initialize BBox assignment
+
+    init_boxes: List of BBox
+    return: None
+    &#34;&#34;&#34;
+
+    [self._add_new_box(box) for box in init_boxes if not self.boxes]</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="videoprocessing.HumanDetection"><code class="flex name class">
+<span>class <span class="ident">HumanDetection</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>HumanDetection, Detect human in a frame video</p>
+<h2 id="params">Params</h2>
+<p>args (): Arguments</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class HumanDetection:
+    &#34;&#34;&#34;HumanDetection, Detect human in a frame video
+
+    Params:
+        args (): Arguments
+    &#34;&#34;&#34;
+
+    def __init__(self, args):
+        self.video = args.video
+        self.start_frame = args.video_start_frame
+        self.aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_7X7_1000)
+        self.boxes_3d = []
+        self.colors = {}
+        self.detection_dnn = net.Yolo(args.yolo_cfg, args.yolo_w, 0.97)
+        with open(args.calibration_cam, &#39;rb&#39;) as f:
+            self.calibration_camera = pickle.load(f)
+
+    def run(self, w, h, background=True):
+        # type: (int, int, bool) -&gt; None
+        &#34;&#34;&#34;Execute human detection
+
+        w: Frame width
+        h: Frame height
+        background: Process in background mode
+        return: None
+        &#34;&#34;&#34;
+
+        video = PlayVideo(self.video, w, h, self.start_frame, background)
+        video.play(self._detect)
+
+    def _detect(self, frame, frame_gray, frame_number):
+        # type: (np.ndarray, np.ndarray, int) -&gt; np.ndarray
+        &#34;&#34;&#34;Use Yolo and Aruco detectors to extract BBox data
+
+        frame: Frame of video
+        frame_gray: Frame of video in grayscale
+        frame_number: Current frame number
+        return: None
+        &#34;&#34;&#34;
+
+        self.boxes_3d.append([])
+        box_assignment = BoxAssignment(90, 30)
+
+        if self.detection_dnn:
+            boxes = self.detection_dnn.predict(frame)
+
+            for i in range(len(boxes)):
+                x, y, w, h = boxes[i]
+                box = Rect(x, y, w, h)
+                boxes[i] = BoundBox(None, box, None, None)
+                frame_gray = boxes[i].draw(frame_gray)
+
+            corners, aruco_ids, _ = aruco.detectMarkers(frame_gray, self.aruco_dict)
+
+            for i in range(len(corners)):
+                box = Rect.from_corners(corners[i], self.calibration_camera)
+                id_aruco = aruco_ids[i][0]
+                if id_aruco not in self.colors.keys():
+                    self.colors[id_aruco] = (randint(64, 255), randint(64, 255), randint(64, 255))
+                corners[i] = BoundBox(id_aruco, box, self.colors[id_aruco], None)
+
+            # Aruco assignment
+            if aruco_ids is not None:
+                boxes = box_assignment.assign_aruco(boxes, corners)
+
+            for box in boxes:
+                self.boxes_3d[frame_number].append(box)
+
+        return frame_gray
+
+    def save_data(self, filepath):
+        # type: (str) -&gt; None
+        &#34;&#34;&#34;Save data extracted from video into file
+
+        filepath: Filename to save data
+        return: None
+        &#34;&#34;&#34;
+
+        with open(filepath, &#39;wb&#39;) as f:
+            pickle.dump([self.boxes_3d], f)
+        return</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="videoprocessing.HumanDetection.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self, args)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Initialize self.
+See help(type(self)) for accurate signature.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def __init__(self, args):
+    self.video = args.video
+    self.start_frame = args.video_start_frame
+    self.aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_7X7_1000)
+    self.boxes_3d = []
+    self.colors = {}
+    self.detection_dnn = net.Yolo(args.yolo_cfg, args.yolo_w, 0.97)
+    with open(args.calibration_cam, &#39;rb&#39;) as f:
+        self.calibration_camera = pickle.load(f)</code></pre>
+</details>
+</dd>
+<dt id="videoprocessing.HumanDetection.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>self, w, h, background=True)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Execute human detection</p>
+<dl>
+<dt><strong><code>w</code></strong> :&ensp;<code>Frame</code> <code>width</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>h</code></strong> :&ensp;<code>Frame</code> <code>height</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>background</code></strong> :&ensp;<code>Process</code> <code>in</code> <code>background</code> <code>mode</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>return</code></strong> :&ensp;<code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def run(self, w, h, background=True):
+    # type: (int, int, bool) -&gt; None
+    &#34;&#34;&#34;Execute human detection
+
+    w: Frame width
+    h: Frame height
+    background: Process in background mode
+    return: None
+    &#34;&#34;&#34;
+
+    video = PlayVideo(self.video, w, h, self.start_frame, background)
+    video.play(self._detect)</code></pre>
+</details>
+</dd>
+<dt id="videoprocessing.HumanDetection.save_data"><code class="name flex">
+<span>def <span class="ident">save_data</span></span>(<span>self, filepath)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Save data extracted from video into file</p>
+<dl>
+<dt><strong><code>filepath</code></strong> :&ensp;<code>Filename</code> <code>to</code> <code>save</code> <code>data</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>return</code></strong> :&ensp;<code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def save_data(self, filepath):
+    # type: (str) -&gt; None
+    &#34;&#34;&#34;Save data extracted from video into file
+
+    filepath: Filename to save data
+    return: None
+    &#34;&#34;&#34;
+
+    with open(filepath, &#39;wb&#39;) as f:
+        pickle.dump([self.boxes_3d], f)
+    return</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="videoprocessing.PlayVideo"><code class="flex name class">
+<span>class <span class="ident">PlayVideo</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>PlayVideo, Class to play video frame-by-frame</p>
+<h2 id="params">Params</h2>
+<dl>
+<dt><strong><code>video</code></strong> :&ensp;<code>str</code></dt>
+<dd>Video filename</dd>
+<dt><strong><code>w</code></strong> :&ensp;<code>int</code></dt>
+<dd>Width</dd>
+<dt><strong><code>h</code></strong> :&ensp;<code>int</code></dt>
+<dd>Height</dd>
+<dt><strong><code>start_frame</code></strong> :&ensp;<code>int</code></dt>
+<dd>Start from this frame number</dd>
+<dt><strong><code>background</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Process in background</dd>
+<dt><strong><code>save_video</code></strong> :&ensp;<code>str</code></dt>
+<dd>Filename to save video</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class PlayVideo:
+    &#34;&#34;&#34;PlayVideo, Class to play video frame-by-frame
+
+    Params:
+        video (str): Video filename
+        w (int): Width
+        h (int): Height
+        start_frame (int): Start from this frame number
+        background (bool): Process in background
+        save_video (str): Filename to save video
+    &#34;&#34;&#34;
+
+    def __init__(self, video, w, h, start_frame, background=True, save_video=None):
+        self.h, self.w = h, w
+        self.frame_number = 0
+        self.background = background
+        self.save_video = save_video
+        self.video = video
+        self.start_frame = start_frame
+
+    def play(self, func: classmethod):
+        # type: (classmethod) -&gt; None
+        &#34;&#34;&#34;Play video frame by frame and apply a function `func`
+
+        func: Generic function to execute at each frame
+        return: None
+        &#34;&#34;&#34;
+
+        print(&#34;Loading video...&#34;)
+        cap = cv2.VideoCapture(self.video)
+        cap.set(1, self.start_frame)
+        vid_writer1 = None
+
+        if self.save_video is not None:
+            vid_writer1 = cv2.VideoWriter(self.save_video, cv2.VideoWriter_fourcc(&#39;M&#39;, &#39;J&#39;, &#39;P&#39;, &#39;G&#39;), 30,
+                                          (self.w, self.h))
+
+        if not cap.isOpened():
+            print(&#34;{} Error VideoCap not opened, quitting ... &#34;.format(self.video))
+            quit()
+        else:
+            ret, frame = cap.read()
+
+            print(&#34;Video processing...&#34;)
+            while ret:
+                frame = cv2.resize(frame, (self.w, self.h))
+                frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                frame_gray = cv2.cvtColor(frame_gray, cv2.COLOR_GRAY2BGR)
+
+                frame_gray = func(frame, frame_gray, self.frame_number)
+
+                ret, frame = cap.read()
+                self.frame_number += 1
+
+                if not self.background:
+                    cv2.imshow(&#34;Camera&#34;, frame_gray)
+                    cv2.waitKey(1)
+
+                if vid_writer1 is not None:
+                    vid_writer1.write(frame_gray)
+
+            if vid_writer1 is not None:
+                vid_writer1.release()
+
+            print(&#34;...End video.&#34;)
+            return None</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="videoprocessing.PlayVideo.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self, video, w, h, start_frame, background=True, save_video=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Initialize self.
+See help(type(self)) for accurate signature.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def __init__(self, video, w, h, start_frame, background=True, save_video=None):
+    self.h, self.w = h, w
+    self.frame_number = 0
+    self.background = background
+    self.save_video = save_video
+    self.video = video
+    self.start_frame = start_frame</code></pre>
+</details>
+</dd>
+<dt id="videoprocessing.PlayVideo.play"><code class="name flex">
+<span>def <span class="ident">play</span></span>(<span>self, func)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Play video frame by frame and apply a function <code>func</code></p>
+<dl>
+<dt><strong><code>func</code></strong> :&ensp;<code>Generic</code> <code>function</code> <code>to</code> <code>execute</code> <code>at</code> <code>each</code> <code>frame</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>return</code></strong> :&ensp;<code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def play(self, func: classmethod):
+    # type: (classmethod) -&gt; None
+    &#34;&#34;&#34;Play video frame by frame and apply a function `func`
+
+    func: Generic function to execute at each frame
+    return: None
+    &#34;&#34;&#34;
+
+    print(&#34;Loading video...&#34;)
+    cap = cv2.VideoCapture(self.video)
+    cap.set(1, self.start_frame)
+    vid_writer1 = None
+
+    if self.save_video is not None:
+        vid_writer1 = cv2.VideoWriter(self.save_video, cv2.VideoWriter_fourcc(&#39;M&#39;, &#39;J&#39;, &#39;P&#39;, &#39;G&#39;), 30,
+                                      (self.w, self.h))
+
+    if not cap.isOpened():
+        print(&#34;{} Error VideoCap not opened, quitting ... &#34;.format(self.video))
+        quit()
+    else:
+        ret, frame = cap.read()
+
+        print(&#34;Video processing...&#34;)
+        while ret:
+            frame = cv2.resize(frame, (self.w, self.h))
+            frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            frame_gray = cv2.cvtColor(frame_gray, cv2.COLOR_GRAY2BGR)
+
+            frame_gray = func(frame, frame_gray, self.frame_number)
+
+            ret, frame = cap.read()
+            self.frame_number += 1
+
+            if not self.background:
+                cv2.imshow(&#34;Camera&#34;, frame_gray)
+                cv2.waitKey(1)
+
+            if vid_writer1 is not None:
+                vid_writer1.write(frame_gray)
+
+        if vid_writer1 is not None:
+            vid_writer1.release()
+
+        print(&#34;...End video.&#34;)
+        return None</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="videoprocessing.PointId"><code class="flex name class">
+<span>class <span class="ident">PointId</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>PointId class, contains a point information</p>
+<h2 id="params">Params</h2>
+<dl>
+<dt><strong><code>id</code></strong> :&ensp;<code>int</code></dt>
+<dd>Id to identify the BBox</dd>
+<dt><strong><code>x</code></strong> :&ensp;<code>int</code></dt>
+<dd>X coordinate</dd>
+<dt><strong><code>y</code></strong> :&ensp;<code>int</code></dt>
+<dd>Y coordinate</dd>
+<dt><strong><code>color</code></strong> :&ensp;<code>int</code>, <code>int</code>, <code>int</code></dt>
+<dd>Point color</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class PointId:
+    &#34;&#34;&#34;PointId class, contains a point information
+
+    Params:
+        id (int): Id to identify the BBox
+        x (int): X coordinate
+        y (int): Y coordinate
+        color (int, int, int): Point color
+    &#34;&#34;&#34;
+
+    def __init__(self, id, x, y, color):
+        self.id = id
+        self.x = x
+        self.y = y
+        self.color = color
+
+    def draw(self, frame):
+        # type: (np.ndarray) -&gt; np.ndarray
+        &#34;&#34;&#34;
+
+        frame: Video frame (w, h, n_channel)
+        return: Video frame with PointID drawn on it
+        &#34;&#34;&#34;
+
+        id = 0 if self.id is None else self.id
+        frame = cv2.circle(frame, (self.x, self.y), 10, self.color, -1)
+        cv2.putText(frame, &#34;id: {}&#34;.format(id), (self.x, int(self.y - 20)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.color,
+                    2,
+                    lineType=cv2.LINE_AA)
+
+        return frame</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="videoprocessing.PointId.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self, id, x, y, color)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Initialize self.
+See help(type(self)) for accurate signature.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def __init__(self, id, x, y, color):
+    self.id = id
+    self.x = x
+    self.y = y
+    self.color = color</code></pre>
+</details>
+</dd>
+<dt id="videoprocessing.PointId.draw"><code class="name flex">
+<span>def <span class="ident">draw</span></span>(<span>self, frame)</span>
+</code></dt>
+<dd>
+<section class="desc"><dl>
+<dt><strong><code>frame</code></strong> :&ensp;<code>Video</code> <code>frame</code> (<code>w</code>, <code>h</code>, <code>n_channel</code>)</dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>return</code></strong> :&ensp;<code>Video</code> <code>frame</code> <code>with</code> <code>PointID</code> <code>drawn</code> <code>on</code> <code>it</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def draw(self, frame):
+    # type: (np.ndarray) -&gt; np.ndarray
+    &#34;&#34;&#34;
+
+    frame: Video frame (w, h, n_channel)
+    return: Video frame with PointID drawn on it
+    &#34;&#34;&#34;
+
+    id = 0 if self.id is None else self.id
+    frame = cv2.circle(frame, (self.x, self.y), 10, self.color, -1)
+    cv2.putText(frame, &#34;id: {}&#34;.format(id), (self.x, int(self.y - 20)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.color,
+                2,
+                lineType=cv2.LINE_AA)
+
+    return frame</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="videoprocessing.PostProcessing"><code class="flex name class">
+<span>class <span class="ident">PostProcessing</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>PostProcessing, Process data extracted from video</p>
+<h2 id="params">Params</h2>
+<p>args (): Arguments</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class PostProcessing:
+    &#34;&#34;&#34;PostProcessing, Process data extracted from video
+
+      Params:
+          args (): Arguments
+      &#34;&#34;&#34;
+
+    def __init__(self, args):
+        self.video = args.video
+        self.start_frame = args.video_start_frame
+        self.boxes_3d = None
+        self.homography_data = None
+        self.bird_view = None
+
+    def load_data(self, filepath):
+        # type: (str) -&gt; None
+        &#34;&#34;&#34;Load data form file
+
+        filepath: filename
+        return: None
+        &#34;&#34;&#34;
+
+        with open(filepath, &#39;rb&#39;) as f:
+            self.boxes_3d = pickle.load(f)[0]
+
+    def save_data(self, filepath):
+        # type: (str) -&gt; None
+        &#34;&#34;&#34;Save data into file
+        Data use this structure:
+        frame1: [Box1, Box2, ...]
+        frame2: [Box1, Box2, ...]
+        ...
+        frameN: [Box1, Box2, ...]
+
+        filepath: Filename to save data
+        return: None
+        &#34;&#34;&#34;
+
+        with open(filepath, &#39;wb&#39;) as f:
+            pickle.dump([self.boxes_3d], f)
+        return
+
+    def iterate_data(self):
+        # type: () -&gt; (int, BoundBox)
+        &#34;&#34;&#34;Generator to iterate data (BBox in each frame)
+
+        :yield iterator: (Frame number, Bounding Box)
+        &#34;&#34;&#34;
+
+        for i in range(0, len(self.boxes_3d)):
+            for box in self.boxes_3d[i]:
+                yield i, box
+
+    def get_homography(self, w, h, background=False, save_video=None):
+        # type: (int, int, bool, str) -&gt; None
+        &#34;&#34;&#34; Run homography video
+
+        w: Frame width
+        h: Frame height
+        background: Process in background mode
+        save_video: Filename to save video
+        return: None
+        &#34;&#34;&#34;
+
+        video = PlayVideo(self.video, w, h, self.start_frame, background, save_video)
+        video.play(self._homography)
+
+    def compute_homography(self, pts_src, pts_dst, pic):
+        # type: (np.ndarray, np.ndarray, str) -&gt; None
+        &#34;&#34;&#34;Compute homography
+
+        pts_src: Source points to compute homography
+        pts_dst: Destination points to compute homography
+        pic: Filename of a birdview picture
+        return: None
+        &#34;&#34;&#34;
+
+        pic = cv2.imread(pic, 0)
+        self.bird_view = cv2.cvtColor(pic, cv2.COLOR_GRAY2BGR)
+
+        hom, status = cv2.findHomography(pts_src, pts_dst)
+        self.homography_data = copy.deepcopy(self.boxes_3d)
+        iterator = ((i, j, box) for i in range(len(self.homography_data))
+                    for j, box in enumerate(self.homography_data[i]))
+
+        for i, j, box in iterator:
+            x, y = box.rect.c_x, (box.rect.y + box.rect.h)
+            points = np.array([[[x, y]]], dtype=&#39;float32&#39;)
+            points = cv2.perspectiveTransform(points, hom)
+            self.homography_data[i][j] = PointId(box.id, points[0][0][0], points[0][0][1], box.color)
+
+    def _homography(self, frame, frame_gray, current_frame):
+        # type: (np.ndarray, np.ndarray, int) -&gt; np.ndarray
+        &#34;&#34;&#34;
+
+        frame: Video frame
+        frame_gray: Video frame in grayscale
+        current_frame: Number of the current frame
+        return: Frame with Points drawn on it
+        &#34;&#34;&#34;
+
+        bird_view = copy.deepcopy(self.bird_view)
+        for point in self.homography_data[current_frame]:
+            point.draw(bird_view)
+        return bird_view
+
+    def _smoot_get(self):
+        # type: () -&gt; dict
+        &#34;&#34;&#34;
+
+        return: Dict with BBox points on which to apply smooth
+        &#34;&#34;&#34;
+
+        h_points = {}
+        iterator = self.iterate_data()
+
+        for _, box in iterator:
+            if box.id not in h_points.keys():
+                h_points[box.id] = []
+            h_points[box.id].append((box.rect.x, box.rect.y, box.rect.h, box.rect.w))
+        return h_points
+
+    def smooth(self, kernel_size):
+        # type: (int) -&gt; None
+        &#34;&#34;&#34;Smooth BBox
+
+        kernel_size: Number specifying kernel size (high more smoothing)
+        return:
+
+        &gt;&gt; NOTE: Smoothing is applied only to (y, h, w) BBox params
+                 Smoothing on X coordinate is NOT visually good
+        &#34;&#34;&#34;
+
+        h_points = self._smoot_get()
+        for key, val in h_points.items():
+            h_points[key] = utils.smooth(np.array(val), kernel_size, kernel_dim=4)
+
+        h_indexes = {}
+        iterator = self.iterate_data()
+
+        for _, box in iterator:
+            if box.id not in h_indexes:
+                h_indexes[box.id] = 0
+            ix = h_indexes[box.id]
+            box.rect.y = int(h_points[box.id][ix][1])
+            box.rect.h = int(h_points[box.id][ix][2])
+            box.rect.w = int(h_points[box.id][ix][3])
+            h_indexes[box.id] += 1
+
+    def _predict_z(self):
+        # type: () -&gt; (float, float)
+        &#34;&#34;&#34;Regression BBox points (height, depth)
+
+        return: straight line coefficients (m, q)
+        &#34;&#34;&#34;
+
+        box_h, box_z = [], []
+        iterator = self.iterate_data()
+
+        for _, box in iterator:
+            if box.rect.z is not None:
+                box_h.append(box.rect.h)
+                box_z.append(box.rect.z)
+
+        coeff = np.polyfit(np.array(box_h), np.array(box_z), 1)
+        return coeff[0], coeff[1]
+
+    def fill_z(self):
+        # type: () -&gt; None
+        &#34;&#34;&#34;Estimate missing depth information of BBox in data
+           and fill them inplace
+
+        return: None
+        &#34;&#34;&#34;
+
+        m, q = self._predict_z()
+        iterator = self.iterate_data()
+
+        for _, box in iterator:
+            if box.rect.z is None:
+                box.rect.z = box.rect.h * m + q
+
+    def assign_id(self, mode=&#39;3d&#39;, threshold=120, max_age=30, aruco_priority=True):
+        # type: (str, int, int) -&gt; None
+        &#34;&#34;&#34;Assign BBox ids
+
+        mode: Distance mode: (3d, bottom, center)
+        threshold: Tolerance threshold
+        max_age: Max number of frames than remove BBox
+        aruco_priority: Assign aruco ID if available
+        return: None
+        &#34;&#34;&#34;
+
+        first_frame = 0
+        box_assignment = BoxAssignment(threshold, max_age)
+
+        while len(self.boxes_3d[first_frame]) &lt; 1:
+            first_frame += 1
+
+        box_assignment.init(self.boxes_3d[first_frame])
+        for i in range(first_frame, len(self.boxes_3d)):
+            self.boxes_3d = box_assignment.assign(self.boxes_3d, i, mode, aruco_priority)
+
+    def get_video(self, w, h, background=False, save_video=None):
+        # type: (int, int, bool, str) -&gt; None
+        &#34;&#34;&#34;Execute human detection
+
+        w: Frame width
+        h: Frame height
+        background: Process in background mode
+        save_video: Filename to save video
+        return: None
+        &#34;&#34;&#34;
+
+        video = PlayVideo(self.video, w, h, self.start_frame, background, save_video)
+        video.play(self._draw_boxes)
+
+    def _draw_boxes(self, frame, frame_gray, frame_number):
+        # type: (np.ndarray, np.ndarray, int) -&gt; np.ndarray
+        &#34;&#34;&#34;
+
+        frame: Frame of video
+        frame_gray: Frame of video in grayscale
+        frame_number: Current frame number
+        return: Frame with BBox drawn on it
+        &#34;&#34;&#34;
+
+        for box in self.boxes_3d[frame_number]:
+            frame_gray = box.draw(frame_gray)
+        return frame_gray
+
+    def _prec(self, id, frame_num, window):
+        # type: (int, int, int) -&gt; BoundBox or None
+        &#34;&#34;&#34;Find previous BBox with id = id
+
+        id: BBox ID
+        frame_num: Current frame number
+        window: Frame window to search
+        return: None
+        &#34;&#34;&#34;
+
+        window = frame_num - window
+        while frame_num &gt; window and frame_num &gt; 0:
+            iterator = (box for box in self.boxes_3d[frame_num] if (box.id == id) and (box.age == 0))
+            for box in iterator:
+                return box
+            frame_num -= 1
+        return None
+
+    def _succ(self, id, frame_num, window):
+        # type: (int, int, int) -&gt; BoundBox or None
+        &#34;&#34;&#34;Find next BBox with id = id
+
+        id: BBox ID
+        frame_num: Current frame number
+        window: Frame window to search
+        return: None
+        &#34;&#34;&#34;
+
+        window = frame_num + window
+        while frame_num &lt; window and frame_num &lt; len(self.boxes_3d):
+            iterator = (box for box in self.boxes_3d[frame_num] if (box.id == id) and (box.age == 0))
+            for box in iterator:
+                return box
+            frame_num += 1
+        return None
+
+    def __get_ids_at_frame(self, frame_num):
+        # type: (int) -&gt; list
+        &#34;&#34;&#34;Get all BBox ids at frame = frame_num
+
+        frame_num: Frame number
+        return:  List of BBox ids
+        &#34;&#34;&#34;
+
+        box_in_frame = []
+        for box in self.boxes_3d[frame_num]:
+            box_in_frame.append(box.id)
+        return box_in_frame
+
+    def __get_all_id(self):
+        # type: () -&gt; list
+        &#34;&#34;&#34;Get all uniques BBox ids in data
+
+        return:  List of ids
+        &#34;&#34;&#34;
+
+        box_ids = []
+        iterator = self.iterate_data()
+        iterator = ((_, box) for _, box in iterator if box.id not in box_ids)
+
+        for _, box in iterator:
+            box_ids.append(box.id)
+        return box_ids
+
+    def fill(self, window=90):
+        # type: (int) -&gt; None
+        &#34;&#34;&#34;Fill missing detections interpolating data
+
+        window: Window size
+        return: None
+        &#34;&#34;&#34;
+
+        all_ids = self.__get_all_id()
+        iterator = ((i, _id) for _id in all_ids for i in range(0, len(self.boxes_3d))
+                    if _id not in self.__get_ids_at_frame(i))
+
+        for i, _id in iterator:
+            prec_box, next_box = self._prec(_id, i, window), self._succ(_id, i, window)
+            if prec_box is not None and next_box is not None:
+                prec_box.rect = prec_box.rect.interpolate(next_box.rect)
+                self.boxes_3d[i].append(prec_box)
+        return None
+
+    def plot_3d(self, box_id, savepath=None):
+        # type: (int, str) -&gt; None
+        &#34;&#34;&#34;Plot 3d path of a BBox with id = box_id
+
+        box_id: ID BBox to plot
+        savepath: Filename to save video
+        return: None
+        &#34;&#34;&#34;
+
+        points = []
+        out = None
+        iterator = self.iterate_data()
+
+        if savepath is not None:
+            out = cv2.VideoWriter(savepath, cv2.VideoWriter_fourcc(&#39;M&#39;, &#39;J&#39;, &#39;P&#39;, &#39;G&#39;), 30, (800, 800))
+
+        for i, box in iterator:
+            if box.id == box_id:
+                points.append((box.rect.x, box.rect.y+box.rect.h, box.rect.z))
+            else:
+                points.append((None, None, None))
+
+        ts = np.array(points, dtype=np.float32)
+        for i in range(1, len(ts)):
+            fig = utils.show_temporal_sequence(ts[:i], center=np.nanmean(ts, 0), radius=np.sqrt(np.nanvar(ts)),
+                                               colormap=&#39;jet&#39;, swapaxis=False)
+            fig.savefig(&#34;frame.png&#34;)
+            img = cv2.imread(&#34;frame.png&#34;)
+
+            if out:
+                out.write(img)
+            else:
+                cv2.imshow(&#34;Plot 3d&#34;, img)
+                cv2.waitKey(1)
+        if out:
+            out.release()
+        return</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="videoprocessing.PostProcessing.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self, args)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Initialize self.
+See help(type(self)) for accurate signature.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def __init__(self, args):
+    self.video = args.video
+    self.start_frame = args.video_start_frame
+    self.boxes_3d = None
+    self.homography_data = None
+    self.bird_view = None</code></pre>
+</details>
+</dd>
+<dt id="videoprocessing.PostProcessing.assign_id"><code class="name flex">
+<span>def <span class="ident">assign_id</span></span>(<span>self, mode=&#39;3d&#39;, threshold=120, max_age=30, aruco_priority=True)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Assign BBox ids</p>
+<dl>
+<dt><strong><code>mode</code></strong> :&ensp;<code>Distance</code> <code>mode</code>: (<code>3d</code>, <code>bottom</code>, <code>center</code>)</dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>threshold</code></strong> :&ensp;<code>Tolerance</code> <code>threshold</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>max_age</code></strong> :&ensp;<code>Max</code> <code>number</code> of <code>frames</code> <code>than</code> <code>remove</code> <code>BBox</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>aruco_priority</code></strong> :&ensp;<code>Assign</code> <code>aruco</code> <code>ID</code> <code>if</code> <code>available</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>return</code></strong> :&ensp;<code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def assign_id(self, mode=&#39;3d&#39;, threshold=120, max_age=30, aruco_priority=True):
+    # type: (str, int, int) -&gt; None
+    &#34;&#34;&#34;Assign BBox ids
+
+    mode: Distance mode: (3d, bottom, center)
+    threshold: Tolerance threshold
+    max_age: Max number of frames than remove BBox
+    aruco_priority: Assign aruco ID if available
+    return: None
+    &#34;&#34;&#34;
+
+    first_frame = 0
+    box_assignment = BoxAssignment(threshold, max_age)
+
+    while len(self.boxes_3d[first_frame]) &lt; 1:
+        first_frame += 1
+
+    box_assignment.init(self.boxes_3d[first_frame])
+    for i in range(first_frame, len(self.boxes_3d)):
+        self.boxes_3d = box_assignment.assign(self.boxes_3d, i, mode, aruco_priority)</code></pre>
+</details>
+</dd>
+<dt id="videoprocessing.PostProcessing.compute_homography"><code class="name flex">
+<span>def <span class="ident">compute_homography</span></span>(<span>self, pts_src, pts_dst, pic)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Compute homography</p>
+<dl>
+<dt><strong><code>pts_src</code></strong> :&ensp;<code>Source</code> <code>points</code> <code>to</code> <code>compute</code> <code>homography</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>pts_dst</code></strong> :&ensp;<code>Destination</code> <code>points</code> <code>to</code> <code>compute</code> <code>homography</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>pic</code></strong> :&ensp;<code>Filename</code> of <code>a</code> <code>birdview</code> <code>picture</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>return</code></strong> :&ensp;<code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def compute_homography(self, pts_src, pts_dst, pic):
+    # type: (np.ndarray, np.ndarray, str) -&gt; None
+    &#34;&#34;&#34;Compute homography
+
+    pts_src: Source points to compute homography
+    pts_dst: Destination points to compute homography
+    pic: Filename of a birdview picture
+    return: None
+    &#34;&#34;&#34;
+
+    pic = cv2.imread(pic, 0)
+    self.bird_view = cv2.cvtColor(pic, cv2.COLOR_GRAY2BGR)
+
+    hom, status = cv2.findHomography(pts_src, pts_dst)
+    self.homography_data = copy.deepcopy(self.boxes_3d)
+    iterator = ((i, j, box) for i in range(len(self.homography_data))
+                for j, box in enumerate(self.homography_data[i]))
+
+    for i, j, box in iterator:
+        x, y = box.rect.c_x, (box.rect.y + box.rect.h)
+        points = np.array([[[x, y]]], dtype=&#39;float32&#39;)
+        points = cv2.perspectiveTransform(points, hom)
+        self.homography_data[i][j] = PointId(box.id, points[0][0][0], points[0][0][1], box.color)</code></pre>
+</details>
+</dd>
+<dt id="videoprocessing.PostProcessing.fill"><code class="name flex">
+<span>def <span class="ident">fill</span></span>(<span>self, window=90)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Fill missing detections interpolating data</p>
+<dl>
+<dt><strong><code>window</code></strong> :&ensp;<code>Window</code> <code>size</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>return</code></strong> :&ensp;<code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def fill(self, window=90):
+    # type: (int) -&gt; None
+    &#34;&#34;&#34;Fill missing detections interpolating data
+
+    window: Window size
+    return: None
+    &#34;&#34;&#34;
+
+    all_ids = self.__get_all_id()
+    iterator = ((i, _id) for _id in all_ids for i in range(0, len(self.boxes_3d))
+                if _id not in self.__get_ids_at_frame(i))
+
+    for i, _id in iterator:
+        prec_box, next_box = self._prec(_id, i, window), self._succ(_id, i, window)
+        if prec_box is not None and next_box is not None:
+            prec_box.rect = prec_box.rect.interpolate(next_box.rect)
+            self.boxes_3d[i].append(prec_box)
+    return None</code></pre>
+</details>
+</dd>
+<dt id="videoprocessing.PostProcessing.fill_z"><code class="name flex">
+<span>def <span class="ident">fill_z</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Estimate missing depth information of BBox in data
+and fill them inplace</p>
+<dl>
+<dt><strong><code>return</code></strong> :&ensp;<code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def fill_z(self):
+    # type: () -&gt; None
+    &#34;&#34;&#34;Estimate missing depth information of BBox in data
+       and fill them inplace
+
+    return: None
+    &#34;&#34;&#34;
+
+    m, q = self._predict_z()
+    iterator = self.iterate_data()
+
+    for _, box in iterator:
+        if box.rect.z is None:
+            box.rect.z = box.rect.h * m + q</code></pre>
+</details>
+</dd>
+<dt id="videoprocessing.PostProcessing.get_homography"><code class="name flex">
+<span>def <span class="ident">get_homography</span></span>(<span>self, w, h, background=False, save_video=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Run homography video</p>
+<dl>
+<dt><strong><code>w</code></strong> :&ensp;<code>Frame</code> <code>width</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>h</code></strong> :&ensp;<code>Frame</code> <code>height</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>background</code></strong> :&ensp;<code>Process</code> <code>in</code> <code>background</code> <code>mode</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>save_video</code></strong> :&ensp;<code>Filename</code> <code>to</code> <code>save</code> <code>video</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>return</code></strong> :&ensp;<code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_homography(self, w, h, background=False, save_video=None):
+    # type: (int, int, bool, str) -&gt; None
+    &#34;&#34;&#34; Run homography video
+
+    w: Frame width
+    h: Frame height
+    background: Process in background mode
+    save_video: Filename to save video
+    return: None
+    &#34;&#34;&#34;
+
+    video = PlayVideo(self.video, w, h, self.start_frame, background, save_video)
+    video.play(self._homography)</code></pre>
+</details>
+</dd>
+<dt id="videoprocessing.PostProcessing.get_video"><code class="name flex">
+<span>def <span class="ident">get_video</span></span>(<span>self, w, h, background=False, save_video=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Execute human detection</p>
+<dl>
+<dt><strong><code>w</code></strong> :&ensp;<code>Frame</code> <code>width</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>h</code></strong> :&ensp;<code>Frame</code> <code>height</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>background</code></strong> :&ensp;<code>Process</code> <code>in</code> <code>background</code> <code>mode</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>save_video</code></strong> :&ensp;<code>Filename</code> <code>to</code> <code>save</code> <code>video</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>return</code></strong> :&ensp;<code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_video(self, w, h, background=False, save_video=None):
+    # type: (int, int, bool, str) -&gt; None
+    &#34;&#34;&#34;Execute human detection
+
+    w: Frame width
+    h: Frame height
+    background: Process in background mode
+    save_video: Filename to save video
+    return: None
+    &#34;&#34;&#34;
+
+    video = PlayVideo(self.video, w, h, self.start_frame, background, save_video)
+    video.play(self._draw_boxes)</code></pre>
+</details>
+</dd>
+<dt id="videoprocessing.PostProcessing.iterate_data"><code class="name flex">
+<span>def <span class="ident">iterate_data</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Generator to iterate data (BBox in each frame)</p>
+<p>:yield iterator: (Frame number, Bounding Box)</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def iterate_data(self):
+    # type: () -&gt; (int, BoundBox)
+    &#34;&#34;&#34;Generator to iterate data (BBox in each frame)
+
+    :yield iterator: (Frame number, Bounding Box)
+    &#34;&#34;&#34;
+
+    for i in range(0, len(self.boxes_3d)):
+        for box in self.boxes_3d[i]:
+            yield i, box</code></pre>
+</details>
+</dd>
+<dt id="videoprocessing.PostProcessing.load_data"><code class="name flex">
+<span>def <span class="ident">load_data</span></span>(<span>self, filepath)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Load data form file</p>
+<dl>
+<dt><strong><code>filepath</code></strong> :&ensp;<code>filename</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>return</code></strong> :&ensp;<code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def load_data(self, filepath):
+    # type: (str) -&gt; None
+    &#34;&#34;&#34;Load data form file
+
+    filepath: filename
+    return: None
+    &#34;&#34;&#34;
+
+    with open(filepath, &#39;rb&#39;) as f:
+        self.boxes_3d = pickle.load(f)[0]</code></pre>
+</details>
+</dd>
+<dt id="videoprocessing.PostProcessing.plot_3d"><code class="name flex">
+<span>def <span class="ident">plot_3d</span></span>(<span>self, box_id, savepath=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Plot 3d path of a BBox with id = box_id</p>
+<dl>
+<dt><strong><code>box_id</code></strong> :&ensp;<code>ID</code> <code>BBox</code> <code>to</code> <code>plot</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>savepath</code></strong> :&ensp;<code>Filename</code> <code>to</code> <code>save</code> <code>video</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>return</code></strong> :&ensp;<code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def plot_3d(self, box_id, savepath=None):
+    # type: (int, str) -&gt; None
+    &#34;&#34;&#34;Plot 3d path of a BBox with id = box_id
+
+    box_id: ID BBox to plot
+    savepath: Filename to save video
+    return: None
+    &#34;&#34;&#34;
+
+    points = []
+    out = None
+    iterator = self.iterate_data()
+
+    if savepath is not None:
+        out = cv2.VideoWriter(savepath, cv2.VideoWriter_fourcc(&#39;M&#39;, &#39;J&#39;, &#39;P&#39;, &#39;G&#39;), 30, (800, 800))
+
+    for i, box in iterator:
+        if box.id == box_id:
+            points.append((box.rect.x, box.rect.y+box.rect.h, box.rect.z))
+        else:
+            points.append((None, None, None))
+
+    ts = np.array(points, dtype=np.float32)
+    for i in range(1, len(ts)):
+        fig = utils.show_temporal_sequence(ts[:i], center=np.nanmean(ts, 0), radius=np.sqrt(np.nanvar(ts)),
+                                           colormap=&#39;jet&#39;, swapaxis=False)
+        fig.savefig(&#34;frame.png&#34;)
+        img = cv2.imread(&#34;frame.png&#34;)
+
+        if out:
+            out.write(img)
+        else:
+            cv2.imshow(&#34;Plot 3d&#34;, img)
+            cv2.waitKey(1)
+    if out:
+        out.release()
+    return</code></pre>
+</details>
+</dd>
+<dt id="videoprocessing.PostProcessing.save_data"><code class="name flex">
+<span>def <span class="ident">save_data</span></span>(<span>self, filepath)</span>
+</code></dt>
+<dd>
+<section class="desc"><dl>
+<dt>Save data into file</dt>
+<dt>Data use this structure:</dt>
+<dt><strong><code>frame1</code></strong> :&ensp;[<code>Box1</code>, <code>Box2</code>, <code>...</code>]</dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>frame2</code></strong> :&ensp;[<code>Box1</code>, <code>Box2</code>, <code>...</code>]</dt>
+<dd>&nbsp;</dd>
+<dt>&hellip;</dt>
+<dt><strong><code>frameN</code></strong> :&ensp;[<code>Box1</code>, <code>Box2</code>, <code>...</code>]</dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>filepath</code></strong> :&ensp;<code>Filename</code> <code>to</code> <code>save</code> <code>data</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>return</code></strong> :&ensp;<code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def save_data(self, filepath):
+    # type: (str) -&gt; None
+    &#34;&#34;&#34;Save data into file
+    Data use this structure:
+    frame1: [Box1, Box2, ...]
+    frame2: [Box1, Box2, ...]
+    ...
+    frameN: [Box1, Box2, ...]
+
+    filepath: Filename to save data
+    return: None
+    &#34;&#34;&#34;
+
+    with open(filepath, &#39;wb&#39;) as f:
+        pickle.dump([self.boxes_3d], f)
+    return</code></pre>
+</details>
+</dd>
+<dt id="videoprocessing.PostProcessing.smooth"><code class="name flex">
+<span>def <span class="ident">smooth</span></span>(<span>self, kernel_size)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Smooth BBox</p>
+<dl>
+<dt><strong><code>kernel_size</code></strong> :&ensp;<code>Number</code> <code>specifying</code> <code>kernel</code> <code>size</code> (<code>high</code> <code>more</code> <code>smoothing</code>)</dt>
+<dd>&nbsp;</dd>
+</dl>
+<p>return:</p>
+<blockquote>
+<blockquote>
+<p>NOTE: Smoothing is applied only to (y, h, w) BBox params
+Smoothing on X coordinate is NOT visually good</p>
+</blockquote>
+</blockquote></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def smooth(self, kernel_size):
+    # type: (int) -&gt; None
+    &#34;&#34;&#34;Smooth BBox
+
+    kernel_size: Number specifying kernel size (high more smoothing)
+    return:
+
+    &gt;&gt; NOTE: Smoothing is applied only to (y, h, w) BBox params
+             Smoothing on X coordinate is NOT visually good
+    &#34;&#34;&#34;
+
+    h_points = self._smoot_get()
+    for key, val in h_points.items():
+        h_points[key] = utils.smooth(np.array(val), kernel_size, kernel_dim=4)
+
+    h_indexes = {}
+    iterator = self.iterate_data()
+
+    for _, box in iterator:
+        if box.id not in h_indexes:
+            h_indexes[box.id] = 0
+        ix = h_indexes[box.id]
+        box.rect.y = int(h_points[box.id][ix][1])
+        box.rect.h = int(h_points[box.id][ix][2])
+        box.rect.w = int(h_points[box.id][ix][3])
+        h_indexes[box.id] += 1</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="videoprocessing.Rect"><code class="flex name class">
+<span>class <span class="ident">Rect</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>Rect class, contains a Bounding Box position</p>
+<h2 id="params">Params</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>int</code></dt>
+<dd>Top x coordinate</dd>
+<dt><strong><code>y</code></strong> :&ensp;<code>int</code></dt>
+<dd>Top y coordinate</dd>
+<dt><strong><code>w</code></strong> :&ensp;<code>int</code></dt>
+<dd>Width</dd>
+<dt><strong><code>h</code></strong> :&ensp;<code>int</code></dt>
+<dd>Height</dd>
+<dt><strong><code>z</code></strong> :&ensp;<code>int</code></dt>
+<dd>Depth</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Rect:
+    &#34;&#34;&#34;Rect class, contains a Bounding Box position
+
+    Params:
+        x (int): Top x coordinate
+        y (int): Top y coordinate
+        w (int): Width
+        h (int): Height
+        z (int): Depth
+    &#34;&#34;&#34;
+
+    def __init__(self, x, y, w, h, z=None):
+        self.x, self.y = int(x), int(y)
+        self.w, self.h = int(w), int(h)
+        self.c_x, self.c_y = x + int(w / 2), y + int(h / 2)
+        self.z = z
+
+    def interpolate(self, r2):
+        # type: (Rect) -&gt; Rect
+        &#34;&#34;&#34;Interpolate two Rect classes
+
+        r2: Rect to interpolate
+        return:  Interpolated Rect
+        &#34;&#34;&#34;
+
+        x = (self.x + r2.x) / 2
+        y = (self.y + r2.y) / 2
+        w = (self.w + r2.w) / 2
+        h = (self.h + r2.h) / 2
+        z = None
+        if self.z is not None and r2.z is not None:
+            z = (self.z + r2.z) / 2
+
+        return Rect(int(x), int(y), int(w), int(h), z)
+
+    @staticmethod
+    def from_corners(corners, calibration_camera):
+        # type: (list, list) -&gt; Rect
+        &#34;&#34;&#34;Initialize Rect with corners
+
+        corners: List of Aruco corners coordinates
+        calibration_camera: Info about the camera calibration
+        return: Rect
+        &#34;&#34;&#34;
+
+        ret, mtx, dist, rvecs, tvecs = calibration_camera
+        x1, y1, x2, y2 = corners[0][0][0], corners[0][0][1], corners[0][2][0], corners[0][2][1]
+        w, h = abs(x1 - x2), abs(y1 - y2)
+
+        rvecs, tvecs, _ = aruco.estimatePoseSingleMarkers(corners, 0.09, mtx, dist)
+
+        box = Rect(int(x1), int(y1), int(w), int(h), tvecs.squeeze()[2])
+        return box</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="videoprocessing.Rect.from_corners"><code class="name flex">
+<span>def <span class="ident">from_corners</span></span>(<span>corners, calibration_camera)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Initialize Rect with corners</p>
+<dl>
+<dt><strong><code>corners</code></strong> :&ensp;<code>List</code> of <code>Aruco</code> <code>corners</code> <code>coordinates</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>calibration_camera</code></strong> :&ensp;<code>Info</code> <code>about</code> <code>the</code> <code>camera</code> <code>calibration</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>return</code></strong> :&ensp;<a title="videoprocessing.Rect" href="#videoprocessing.Rect"><code>Rect</code></a></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">@staticmethod
+def from_corners(corners, calibration_camera):
+    # type: (list, list) -&gt; Rect
+    &#34;&#34;&#34;Initialize Rect with corners
+
+    corners: List of Aruco corners coordinates
+    calibration_camera: Info about the camera calibration
+    return: Rect
+    &#34;&#34;&#34;
+
+    ret, mtx, dist, rvecs, tvecs = calibration_camera
+    x1, y1, x2, y2 = corners[0][0][0], corners[0][0][1], corners[0][2][0], corners[0][2][1]
+    w, h = abs(x1 - x2), abs(y1 - y2)
+
+    rvecs, tvecs, _ = aruco.estimatePoseSingleMarkers(corners, 0.09, mtx, dist)
+
+    box = Rect(int(x1), int(y1), int(w), int(h), tvecs.squeeze()[2])
+    return box</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="videoprocessing.Rect.__init__"><code class="name flex">
+<span>def <span class="ident">__init__</span></span>(<span>self, x, y, w, h, z=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Initialize self.
+See help(type(self)) for accurate signature.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def __init__(self, x, y, w, h, z=None):
+    self.x, self.y = int(x), int(y)
+    self.w, self.h = int(w), int(h)
+    self.c_x, self.c_y = x + int(w / 2), y + int(h / 2)
+    self.z = z</code></pre>
+</details>
+</dd>
+<dt id="videoprocessing.Rect.interpolate"><code class="name flex">
+<span>def <span class="ident">interpolate</span></span>(<span>self, r2)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Interpolate two Rect classes</p>
+<dl>
+<dt><strong><code>r2</code></strong> :&ensp;<a title="videoprocessing.Rect" href="#videoprocessing.Rect"><code>Rect</code></a> <code>to</code> <code>interpolate</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>return</code></strong> :&ensp; <code>Interpolated</code> <a title="videoprocessing.Rect" href="#videoprocessing.Rect"><code>Rect</code></a></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def interpolate(self, r2):
+    # type: (Rect) -&gt; Rect
+    &#34;&#34;&#34;Interpolate two Rect classes
+
+    r2: Rect to interpolate
+    return:  Interpolated Rect
+    &#34;&#34;&#34;
+
+    x = (self.x + r2.x) / 2
+    y = (self.y + r2.y) / 2
+    w = (self.w + r2.w) / 2
+    h = (self.h + r2.h) / 2
+    z = None
+    if self.z is not None and r2.z is not None:
+        z = (self.z + r2.z) / 2
+
+    return Rect(int(x), int(y), int(w), int(h), z)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="videoprocessing.BoundBox" href="#videoprocessing.BoundBox">BoundBox</a></code></h4>
+<ul class="">
+<li><code><a title="videoprocessing.BoundBox.__init__" href="#videoprocessing.BoundBox.__init__">__init__</a></code></li>
+<li><code><a title="videoprocessing.BoundBox.draw" href="#videoprocessing.BoundBox.draw">draw</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="videoprocessing.BoxAssignment" href="#videoprocessing.BoxAssignment">BoxAssignment</a></code></h4>
+<ul class="">
+<li><code><a title="videoprocessing.BoxAssignment.__init__" href="#videoprocessing.BoxAssignment.__init__">__init__</a></code></li>
+<li><code><a title="videoprocessing.BoxAssignment.assign" href="#videoprocessing.BoxAssignment.assign">assign</a></code></li>
+<li><code><a title="videoprocessing.BoxAssignment.assign_aruco" href="#videoprocessing.BoxAssignment.assign_aruco">assign_aruco</a></code></li>
+<li><code><a title="videoprocessing.BoxAssignment.init" href="#videoprocessing.BoxAssignment.init">init</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="videoprocessing.HumanDetection" href="#videoprocessing.HumanDetection">HumanDetection</a></code></h4>
+<ul class="">
+<li><code><a title="videoprocessing.HumanDetection.__init__" href="#videoprocessing.HumanDetection.__init__">__init__</a></code></li>
+<li><code><a title="videoprocessing.HumanDetection.run" href="#videoprocessing.HumanDetection.run">run</a></code></li>
+<li><code><a title="videoprocessing.HumanDetection.save_data" href="#videoprocessing.HumanDetection.save_data">save_data</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="videoprocessing.PlayVideo" href="#videoprocessing.PlayVideo">PlayVideo</a></code></h4>
+<ul class="">
+<li><code><a title="videoprocessing.PlayVideo.__init__" href="#videoprocessing.PlayVideo.__init__">__init__</a></code></li>
+<li><code><a title="videoprocessing.PlayVideo.play" href="#videoprocessing.PlayVideo.play">play</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="videoprocessing.PointId" href="#videoprocessing.PointId">PointId</a></code></h4>
+<ul class="">
+<li><code><a title="videoprocessing.PointId.__init__" href="#videoprocessing.PointId.__init__">__init__</a></code></li>
+<li><code><a title="videoprocessing.PointId.draw" href="#videoprocessing.PointId.draw">draw</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="videoprocessing.PostProcessing" href="#videoprocessing.PostProcessing">PostProcessing</a></code></h4>
+<ul class="two-column">
+<li><code><a title="videoprocessing.PostProcessing.__init__" href="#videoprocessing.PostProcessing.__init__">__init__</a></code></li>
+<li><code><a title="videoprocessing.PostProcessing.assign_id" href="#videoprocessing.PostProcessing.assign_id">assign_id</a></code></li>
+<li><code><a title="videoprocessing.PostProcessing.compute_homography" href="#videoprocessing.PostProcessing.compute_homography">compute_homography</a></code></li>
+<li><code><a title="videoprocessing.PostProcessing.fill" href="#videoprocessing.PostProcessing.fill">fill</a></code></li>
+<li><code><a title="videoprocessing.PostProcessing.fill_z" href="#videoprocessing.PostProcessing.fill_z">fill_z</a></code></li>
+<li><code><a title="videoprocessing.PostProcessing.get_homography" href="#videoprocessing.PostProcessing.get_homography">get_homography</a></code></li>
+<li><code><a title="videoprocessing.PostProcessing.get_video" href="#videoprocessing.PostProcessing.get_video">get_video</a></code></li>
+<li><code><a title="videoprocessing.PostProcessing.iterate_data" href="#videoprocessing.PostProcessing.iterate_data">iterate_data</a></code></li>
+<li><code><a title="videoprocessing.PostProcessing.load_data" href="#videoprocessing.PostProcessing.load_data">load_data</a></code></li>
+<li><code><a title="videoprocessing.PostProcessing.plot_3d" href="#videoprocessing.PostProcessing.plot_3d">plot_3d</a></code></li>
+<li><code><a title="videoprocessing.PostProcessing.save_data" href="#videoprocessing.PostProcessing.save_data">save_data</a></code></li>
+<li><code><a title="videoprocessing.PostProcessing.smooth" href="#videoprocessing.PostProcessing.smooth">smooth</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="videoprocessing.Rect" href="#videoprocessing.Rect">Rect</a></code></h4>
+<ul class="">
+<li><code><a title="videoprocessing.Rect.__init__" href="#videoprocessing.Rect.__init__">__init__</a></code></li>
+<li><code><a title="videoprocessing.Rect.from_corners" href="#videoprocessing.Rect.from_corners">from_corners</a></code></li>
+<li><code><a title="videoprocessing.Rect.interpolate" href="#videoprocessing.Rect.interpolate">interpolate</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.5.3</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
