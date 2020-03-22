@@ -535,6 +535,11 @@ iframe {
   .project-image {
     margin-bottom: 15px;
   }
+
+  #VisaChipCardVideo{
+    height: 500px;
+  }
+
 }
 /* Small devices (tablets, 768px and up) */
 /* Medium devices (desktops, 992px and up) */
@@ -564,9 +569,9 @@ iframe {
 #light {
   display: none;
   position: absolute;
+  transform: translate(-50%, -50%);
   top: 50%;
   left: 50%;
-  transform: scale(0.9) translate(-50%, -50%);
   border: 2px solid #FFF;
   background: #FFF;
   z-index: 1002;
