@@ -205,11 +205,23 @@ iframe {
 .latest .item .title a:hover {
   color: #5f6b77;
 }
+
 .latest .item .project-image:hover {
   -webkit-opacity: 0.8;
   -moz-opacity: 0.8;
   opacity: 0.8;
+
 }
+
+.item img{
+	max-width: 800px;
+    width: 100%;
+    display: block;
+    margin: 20px auto 0;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 .latest .divider {
   margin-bottom: 60px;
 }
@@ -226,6 +238,7 @@ iframe {
 }
 .latest .featured img {
   margin-bottom: 30px;
+
 }
 .latest .featured .desc {
   margin-bottom: 30px;
@@ -609,3 +622,96 @@ iframe {
   display: none;
 }
 
+ #project-slider {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  #project-slider::-webkit-scrollbar {
+    display: none;
+  }
+
+  .item_h {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    box-sizing: border-box;
+    padding: 0px 20px;
+    max-width: 100%;
+  }
+
+  .item_h .desc {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .item_h .title a {
+    font-size: 28px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #778492;
+  }
+
+  .item_h .desc p {
+    font-size: 17px;
+    color: #444;
+    line-height: 1.6;
+    margin: 10px 0;
+  }
+
+  .item_h .desc p.date {
+    font-size: 15px;
+    color: #777;
+    margin-bottom: 5px;
+  }
+
+
+  .item_h .desc ul li {
+    margin-bottom: 5px;
+  }
+
+  .item_h img,
+  .item_h video {
+    max-width: 800px;
+    width: 100%;
+    display: block;
+    margin: 20px auto 0;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .project-slider-controls {
+    text-align: center;
+    margin-top: 30px;
+  }
+
+  .project-slider-controls button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    font-size: 16px;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .project-slider-controls button:hover {
+    background-color: #0056b3;
+  }
+
+  @media (max-width: 768px) {
+    .item_h .desc {
+      padding: 0 10px;
+    }
+
+    .project-slider-controls button {
+      font-size: 14px;
+      padding: 8px 16px;
+    }
+  }
