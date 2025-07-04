@@ -78,7 +78,7 @@
                         <h2 class="heading">Work Experience</h2>
                         <div class="content">
 
-                             <div class="item">
+                             <div class="item" style="padding-bottom: 0px; padding-top: 0px">
                                 <h3 class="title" style="font-size: 19px">Data Scientist - <span class="place">NATO CMRE</span> <span class="year">(2024 - Present)</span></h3>
                                 <p style="font-size: 17px">Scientist at <a href="https://www.cmre.nato.int/">NATO Centre for maritime research & experimentation.</a></p>
                                 <p style="font-size: 14px">
@@ -89,7 +89,7 @@
 
                             </div><!--//item-->
 
-                            <div class="item">
+                            <div class="item" style="padding-bottom: 0px; padding-top: 0px">
                                 <h3 class="title" style="font-size: 19px">Research Engineer - <span class="place">Leonardo Labs</span> <span class="year">(2021 - 2024)</span></h3>
                                 <p style="font-size: 17px">Researcher at <a href="https://www.leonardo.com/it/researchers-detail/-/detail/rosario-di-carlo">Leonardo's R&D laboratories.</a></p>
                                 <p style="font-size: 14px">
@@ -105,7 +105,7 @@
 
                             </div><!--//item-->
 
-                            <div class="item">
+                            <div class="item" style="padding-bottom: 0px; padding-top: 0px">
                                 <h3 class="title" style="font-size: 19px">Research Fellow - <span class="place"> AImageLab </span> <span class="year">(2019 - 2021)</span></h3>
                                 <p style="font-size: 17px">Researcher at <a href="http://imagelab.ing.unimore.it">AImageLab laboratory</a></p>
                                 <p style="font-size: 14px"> 
@@ -120,107 +120,124 @@
                 </section><!--//section-->
 
                 <section class="latest section">
-                    <div class="section-inner">
+                    <div class="section-inner" style="overflow: hidden;">
                         <h2 class="heading">Highlighted Projects</h2>
-                        <p style="font-size: 19px;">
-                        <div class="content">
 
-                            <div class="item row">
-                                <div class="desc col-md-6 col-sm-8 col-xs-12">
-                                    <h3 class="title"><a>ELSA</a></h3>
-                                    <p>Date: 20/07/2023</p>
-                                    <p><b>Python (Pytorch)</b> <br><br> These datasets have been generated using diffusion models in the context of the <a href="https://benchmarks.elsa-ai.eu/">EU project ELSA</a> for the Multimedia use-case.
-                                         The goal is to develop effective solutions for detecting and mitigating the spread of 
-                                         deep fake images in multimedia content.<br><br> Datasets released on Hugginface:
+                            <div id="project-slider">
+
+                                <div class="item_h">
+                                    <div class="desc">
+                                        <h3 class="title"><a>ELSA</a></h3>
+                                        <p class="date">📅 20/07/2023</p>
+                                        <p>🛠️ <b>Python (PyTorch)</b></p>
+                                         <p>
+                                            These datasets have been generated using diffusion models in the context of the
+                                            <a href="https://benchmarks.elsa-ai.eu/">EU project ELSA</a> for the Multimedia use-case. 
+                                            The goal is to develop effective solutions for detecting and mitigating the spread of deep fake images in multimedia content.
+                                        </p>
+                                        
+                                        Datasets released on Hugginface: 
                                         <ul>
-                                        <li>D3 - <a href="https://huggingface.co/datasets/elsaEU/ELSA_D3"><b>10M</b> fake images</a></li>
-                                        <li>D1 - <a href="https://huggingface.co/datasets/elsaEU/ELSA1M_track1">1M fake images</a></li>
-                                        <li>D2 - <a href="https://huggingface.co/datasets/elsaEU/ELSA500k_track2">500k fake images with diffusion attentive attribution maps</a></li>
+                                            <li><a href="https://huggingface.co/datasets/elsaEU/ELSA_D3"><b>10M</b> fake images</a></li>
+                                            <li><a href="https://huggingface.co/datasets/elsaEU/ELSA1M_track1">1M fake images</a></li>
+                                            <li><a href="https://huggingface.co/datasets/elsaEU/ELSA500k_track2">500k with attribution maps</a></li>
                                         </ul>
                                         </p>
-                                   <!--  <p><a class="more-link" href="" target="_blank"><i class="fa fa-external-link"></i> Find out more</a></p> -->
-                                </div><!--//desc-->
-                                <a class="col-md-6 col-sm-8 col-xs-12">
-                                <img class="img-responsive project-image rounded shadow-sm"  src="assets/images/projects/elsa.gif" alt="ELSA fake images diffusion models"/>
-                                </a>
-                            </div>
+                                    </div>
+                                    <img src="assets/images/projects/elsa.gif" alt="ELSA project">
+                                </div>
 
-                            
-                            <div class="item row">
-                                <div class="desc col-md-4 col-sm-8 col-xs-12">
-                                    <h3 class="title"><a>HyperHound</a></h3>
-                                    <p>Date: 01/03/2022</p>
-                                    <p><br>Frontend: <b>Python (Tkinter) </b> <br>Backend: <b>Python (Pytorch)</b> <br><br> HyperHound is a framework developed for 
-                                         hyperspectral imagery analysis. It implements different deep learning and classical models 
-                                        for target detection.</p>
-                                   <!--  <p><a class="more-link" href="" target="_blank"><i class="fa fa-external-link"></i> Find out more</a></p> -->
-                                </div><!--//desc-->
-                                <a class="col-md-8 col-sm-8 col-xs-12">
-                                <img class="img-responsive project-image rounded shadow-sm"  src="assets/images/projects/salinas.gif" alt="hyperspectral image analysis"/>
-                                </a>
-                            </div>
+     
+                                <div class="item_h">
+                                    <div class="desc">
+                                        <h3 class="title"><a>HyperHound</a></h3>
+                                        <p class="date">📅 01/03/2022</p>
+                                        <p>🛠️ Frontend: <b>Python (Tkinter)</b><br>
+                                              🛠️ Backend: <b>Python (Pytorch)</b>
+                                        </p>
+                                        <p>
+                                            HyperHound is a framework developed for hyperspectral imagery analysis. 
+                                            It implements different deep learning and classical models for target detection.
+                                        </p>
+                                    </div>
+                                    <img src="assets/images/projects/salinas.gif" alt="Hyperspectral image analysis" />
+                                </div>
 
-                            <div class="item row">
-                                <div class="desc col-md-4 col-sm-8 col-xs-12">
-                                    <h3 class="title"><a>PROMENADE H2020</a></h3>
-                                    <p>Date: 01/03/2023</p>
-                                    <p><br>Backend: <b>Python</b> <br><br> The developed service fuses Automatic Identification System (AIS) and Radar messages using Machine Learning (ML) algorithms. The service is dockerized making it easy to deploy. The ML algorithms used enable accurate tracking and identification of maritime vessels, thereby enhancing maritime safety and security.</p>
-                                    <p><a class="more-link" href="https://www.promenade-project.eu/" target="_blank"><i class="fa fa-external-link"></i> Find out more</a></p>
-                                </div><!--//desc-->
-                                <a class="col-md-8 col-sm-8 col-xs-12">
-                                <img class="img-responsive project-image rounded shadow-sm"  src="assets/images/projects/fusion.gif" alt="Promenade vessel sensor fusion"/>
-                                </a>
-                                
-                            </div><!--//item-->
+                                <div class="item_h">
+                                    <div class="desc">
+                                        <h3 class="title"><a>PROMENADE H2020</a></h3>
+                                        <p class="date">📅  01/03/2023</p>
+                                        <p>🛠️ Backend: <b>Python </b></p>
+                                        <p>
+                                          The developed service fuses Automatic Identification System (AIS) and Radar messages using Machine Learning (ML) algorithms. 
+                                          The service is dockerized making it easy to deploy. 
+                                          The ML algorithms used enable accurate tracking and identification of maritime vessels, thereby enhancing maritime safety and security.
+                                        </p>
+                                        <p><a href="https://www.promenade-project.eu/" target="_blank">Find out more</a></p>
+                                    </div>
+                                    <img src="assets/images/projects/fusion.gif" alt="Promenade vessel sensor fusion" />
+                                </div>
 
-                            <div class="item row">
-                                <div class="desc col-md-4 col-sm-8 col-xs-12">
-                                    <h3 class="title"><a>Human Machinery interaction</a></h3>
-                                    <p>Date: 08/09/2020</p>
-                                    <p>Frontend: <b>C#</b><br>Backend: <b>Python</b> <br><br>The developed service is an advanced analytics tool that enables the analysis of the interaction between operators and machinery. This tool utilizes several deep learning models for detection and pose estimation, enabling it to accurately track operators movements and identify potentially dangerous actions. Additionally, it computes statistics on the safety of the working area.</p>
-                                    <p><a class="more-link" href="https://www.washingtonpost.com/creativegroup/tetra-pak/sustainable-food-industry-solutions-for-the-future/" target="_blank"><i class="fa fa-external-link"></i> Find out more</a></p>
-                                </div><!--//desc-->
-                                <a class="col-md-8 col-sm-8 col-xs-12">
-                                <img class="img-responsive project-image rounded shadow-sm"  src="assets/images/projects/hm.gif" alt="Human machinery interaction"/>
-                                </a>
-                                
-                            </div><!--//item-->
+                                <div class="item_h">
+                                    <div class="desc">
+                                        <h3 class="title"><a>Human Machinery interaction</a></h3>
+                                        <p class="date">📅 08/09/2020</p>
+                                         <p>🛠️ Frontend: <b>C# </b><br>
+                                              🛠️ Backend: <b>Python </b>
+                                        </p>
+                                        <p>
+                                           The developed service is an advanced analytics tool that enables the analysis of the interaction between operators and machinery.
+                                           This tool utilizes several deep learning models for detection and pose estimation, enabling it to accurately track operators movements and identify potentially dangerous actions. 
+                                           Additionally, it computes statistics on the safety of the working area.
+                                        </p>
+                                        <p><a href="https://www.washingtonpost.com/creativegroup/tetra-pak/sustainable-food-industry-solutions-for-the-future/" target="_blank">Find out more</a></p>
+                                    </div>
+                                    <img src="assets/images/projects/hm.gif" alt="Human machinery interaction" />
+                                </div>
 
-                            <div class="item row">
-                                <div class="desc col-md-4 col-sm-8 col-xs-12">
-                                    <h3 class="title"><a>REBA score estimation</a></h3>
-                                    <p>Date: 19/12/2019</p>
-                                    <p>Backend: <b>Python</b> <br><br> REBA Score Estimation is a Python package that enables the computation of ergonomics metrics, such as Rapid Entire Body Assessment (REBA) and Ovako Working Posture Analysis System (OWAS), from a human pose. </p>
-                                    <p><a class="more-link" href="https://github.com/rs9000/ergonomics" target="_blank"><i class="fa fa-external-link"></i> Find out more</a></p>
-                                </div><!--//desc-->
-                                <a class="col-md-8 col-sm-8 col-xs-12">
-                                <img class="img-responsive project-image rounded shadow-sm"  src="assets/images/projects/pose.gif" alt="REBA score estimation"/>
-                                </a>
-                                
-                            </div><!--//item-->
+                                <div class="item_h">
+                                    <div class="desc">
+                                        <h3 class="title"><a>REBA score estimation</a></h3>
+                                        <p class="date">📅 19/12/2019</p>
+                                         <p>🛠️ Backend: <b>Python </b></p>
+                                         <p>
+                                           REBA Score Estimation is a Python package that enables the computation of ergonomics metrics, 
+                                           such as Rapid Entire Body Assessment (REBA) and Ovako Working Posture Analysis System (OWAS), from a human pose. 
+                                        </p>
+                                        <p><a href="https://github.com/rs9000/ergonomics" target="_blank">Find out more</a></p>
+                                    </div>
+                                    <img src="assets/images/projects/pose.gif" alt="REBA score estimation" />
+                                </div>
 
-                            <div class="item row">
-                                <div class="desc col-md-4 col-sm-8 col-xs-12">
-                                    <h3 class="title"><a>3D Metaverse</a></h3>
-                                    <p>Date: 21/05/2023</p>
-                                    <p><b>Unity, C#</b> <br><br> This project is a practical demonstration of the 3D Google tiles API and RealMe Avatars API. It allows users to explore real-world locations in a 3D digital environment and customize their avatars for an immersive experience.</p>
-                                    <p><a class="more-link" href="https://github.com/rs9000/metaverse" target="_blank"><i class="fa fa-external-link"></i> Find out more</a></p>
-                                </div><!--//desc-->
-                                <a class="col-md-8 col-sm-8 col-xs-12">
-                                <video class="img-responsive project-image rounded shadow-sm"  width="480" controls>
-                                    <source src="./assets/videos/Ig3.mp4" type="video/mp4">
-                                  Your browser does not support the video tag.
-                                  </video> 
-                                </a>
-                                
-                            </div><!--//item-->
-  
+                                <div class="item_h">
+                                    <div class="desc">
+                                        <h3 class="title"><a>3D Metaverse</a></h3>
+                                         <p class="date">📅 21/05/2023</p>
+                                         <p>🛠️ <b>Unity, C# </b></p>
+                                         <p>
+                                           This project is a demonstration of the 3D Google tiles API and RealMe Avatars API. 
+                                           It allows users to explore real-world locations in a 3D digital environment and customize their avatars for an immersive experience.
+                                        </p>
+                                        <p><a href="https://github.com/rs9000/metaverse" target="_blank">Find out more</a></p>
+                                    </div>
+                                    <video controls>
+                                    <source src="assets/videos/Ig3.mp4" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                    </video>
+                                </div>
+	  
+	                        </div>
+	  
+	                    <div class="project-slider-controls">
+                            <button onclick="scrollProjects(-1)">← Previous</button>
+                            <button onclick="scrollProjects(1)">Next →</button>
                         </div>
-                        </p>
+	 
                     </div>
+
                 </section>
 
-               <section class="latest section">
+                <section class="latest section">
                     <div class="section-inner">
                         <h2 class="heading">Papers</h2>
                         <p style="font-size: 19px;">
@@ -575,5 +592,16 @@
     <script type="text/javascript" src="assets/plugins/jquery-rss/dist/jquery.rss.min.js"></script>
     <!-- custom js -->
     <script type="text/javascript" src="assets/js/main.js"></script>
+
+    <script>
+    function scrollProjects(direction) {
+        const slider = document.getElementById('project-slider');
+        const itemWidth = slider.querySelector('.item_h').offsetWidth;
+        slider.scrollBy({ left: direction * itemWidth, behavior: 'smooth' });
+    }
+    </script>
+	
+
+
 </body>
 </html>
